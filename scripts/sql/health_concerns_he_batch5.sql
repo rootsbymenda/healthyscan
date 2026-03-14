@@ -1,0 +1,11 @@
+UPDATE food_additives SET health_concerns_he = 'לא מאושר כממתיק בארה"ב או אירופה; רק גליקוזידי סטביול מזוקקים (≥95%) מותרים' WHERE health_concerns = 'Not approved as sweetener in US or EU; only purified steviol glycosides (≥95%) are permitted';
+UPDATE food_additives SET health_concerns_he = 'רק גליקוזידי סטביול מזוקקים (≥95%) מאושרים; עלה שלם אסור בארה"ב/אירופה' WHERE health_concerns = 'Only purified steviol glycosides (≥95%) are approved; whole leaf not permitted in US/EU';
+UPDATE food_additives SET health_concerns_he = 'סרטנות (אף-לוע — שאיפה); גירוי; רגישות' WHERE health_concerns = 'Carcinogenicity (nasopharyngeal — inhalation); irritation; sensitization';
+UPDATE food_additives SET health_concerns_he = 'רעילות גנטית; סרטנות (כבד — דומה מבנית ל-AFB1); מוטגניות' WHERE health_concerns = 'Genotoxicity; carcinogenicity (liver — structurally analogous to AFB1); mutagenicity';
+UPDATE food_additives SET health_concerns_he = 'מתמוגלובינמיה (תסמונת התינוק הכחול); יצירת ניטרוזאמין אנדוגני → סיכון סרטני' WHERE health_concerns = 'Methemoglobinemia (blue baby syndrome); endogenous nitrosamine formation → carcinogenicity risk';
+UPDATE food_additives SET health_concerns_he = 'מתמוגלובינמיה; יצירת ניטרוזאמין אנדוגני → סיכון לסרטן (קיבה, קולורקטלי)' WHERE health_concerns = 'Methemoglobinemia; endogenous nitrosamine formation → cancer risk (stomach, colorectal)';
+UPDATE food_additives SET health_concerns_he = 'רעילות עצבית; חשש לסרטנות — תינוקות פגיעים ביותר לפי משקל גוף' WHERE health_concerns = 'Neurotoxicity; carcinogenicity concern — infants most vulnerable per kg body weight';
+UPDATE food_additives SET health_concerns_he = 'עיכוב קליטת יוד בתריס — קריטי להתפתחות עצבית בתינוקות' WHERE health_concerns = 'Thyroid iodine uptake inhibition — critical for neurodevelopment in infants';
+UPDATE food_additives SET health_concerns_he = 'שיבוש בלוטת התריס; אנמיה המוליטית — תינוקות הכי פגיעים' WHERE health_concerns = 'Thyroid disruption; hemolytic anemia — infants most vulnerable';
+UPDATE food_additives SET health_concerns_he = 'שיבוש אסטרוגני/אנדוקריני — חשש גבוה ביותר לתינוקות' WHERE health_concerns = 'Estrogenic/endocrine disruption — highest concern for infants';
+UPDATE food_additives SET health_concerns_he = 'פרסתזיה (עקצוץ) ב-≥800 מ"ג מנה בודדת; גרד' WHERE health_concerns = 'Paresthesia (tingling) at ≥800mg single dose; pruritus (itching)';

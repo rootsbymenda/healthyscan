@@ -1,0 +1,1 @@
+SELECT health_concerns, COUNT(*) as cnt FROM food_additives WHERE length(health_concerns) > 0 GROUP BY health_concerns ORDER BY cnt DESC LIMIT 80

@@ -1,0 +1,5 @@
+# Data files (scraped products, test results)
+data/
+.wrangler/
+node_modules/
+*.log

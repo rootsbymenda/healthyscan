@@ -1,0 +1,1 @@
+INSERT INTO food_additives (e_number, common_name, hebrew_name, category, category_he, health_score, health_concerns) SELECT 'N/A', 'Gum arabic', 'גאם ערביק', 'thickener', 'מעבה', 85, 'Natural gum from acacia tree; generally safe' WHERE NOT EXISTS (SELECT 1 FROM food_additives WHERE LOWER(common_name) = 'gum arabic');

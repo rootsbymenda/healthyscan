@@ -1,0 +1,1 @@
+SELECT COUNT(*) as with_ingredients FROM off_products WHERE ingredients_text IS NOT NULL AND length(ingredients_text) > 0;

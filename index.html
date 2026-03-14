@@ -1,0 +1,3997 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1976D2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="HealthyScan">
+<meta name="description" content="סרוק כל מוצר מזון. דע מה באמת בפנים.">
+<meta property="og:title" content="HealthyScan — סורק מזון">
+<meta property="og:description" content="סרוק כל מוצר מזון. דע מה באמת בפנים.">
+<meta property="og:url" content="https://healthy-scan.app/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HealthyScan — סורק מזון">
+<meta name="twitter:description" content="סרוק כל מוצר מזון. דע מה באמת בפנים.">
+<meta property="og:image" content="https://healthy-scan.app/icon-512.png">
+<meta name="twitter:image" content="https://healthy-scan.app/icon-512.png">
+<link rel="canonical" href="https://healthy-scan.app/">
+<title>HealthyScan — סורק מזון</title>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "HealthyScan",
+    "url": "https://healthy-scan.app",
+    "description": "Scan any food product. Know what's really inside. Ingredient safety scores, allergens, nutrition data.",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    },
+    "creator": {
+        "@type": "Organization",
+        "name": "HealthyScan",
+        "url": "https://healthy-scan.app"
+    }
+}
+</script>
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" defer></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #1976D2;
+  --primary-dark: #1565C0;
+  --primary-light: #E3F2FD;
+  --primary-ghost: rgba(25,118,210,0.06);
+  --accent: #FF9800;
+  --accent-light: #FFF3E0;
+  --safe: #4CAF50;
+  --safe-bg: rgba(76,175,80,0.08);
+  --safe-border: rgba(76,175,80,0.25);
+  --caution: #FFA726;
+  --caution-bg: rgba(255,167,38,0.08);
+  --caution-border: rgba(255,167,38,0.25);
+  --concern: #E53935;
+  --concern-bg: rgba(229,57,53,0.08);
+  --concern-border: rgba(229,57,53,0.25);
+  --gray: #90A4AE;
+  --gray-bg: rgba(144,164,174,0.08);
+  --gray-border: rgba(144,164,174,0.2);
+  --bg: #FAFBFC;
+  --surface: #FFFFFF;
+  --border: #E8ECF0;
+  --text: #1A2332;
+  --text-secondary: #546E7A;
+  --text-muted: #90A4AE;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-lg: 0 4px 24px rgba(25,118,210,0.12);
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html { height: 100%; }
+body {
+  font-family: 'Rubik', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100%;
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+h1, h2, h3, .logo { font-family: 'Nunito', sans-serif; }
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.screen.active { display: flex; opacity: 1; }
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  padding-top: calc(12px + var(--safe-area-top));
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 50;
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 20px; color: var(--primary); letter-spacing: -0.3px; }
+.logo .accent { color: var(--accent); }
+.lang-toggle {
+  padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--text-secondary); font-size: 13px;
+  font-weight: 600; font-family: 'Rubik', sans-serif; cursor: pointer; transition: all 0.2s;
+}
+.lang-toggle:hover { border-color: var(--primary); color: var(--primary); }
+.back-btn {
+  display: flex; align-items: center; gap: 6px; background: none; border: none;
+  color: var(--primary); font-family: 'Rubik', sans-serif; font-size: 15px;
+  font-weight: 500; cursor: pointer; padding: 6px 0;
+}
+.back-btn svg { width: 20px; height: 20px; }
+
+/* ===== LANDING ===== */
+#landing-screen { background: var(--surface); position: relative; overflow: hidden; }
+.landing-bg {
+  position: absolute; top: -60%; left: -30%; right: -30%; height: 100%;
+  background: radial-gradient(ellipse at center, rgba(25,118,210,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.landing-content {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 40px 24px; position: relative; z-index: 1; text-align: center;
+}
+.landing-icon {
+  width: 80px; height: 80px; background: var(--primary-light); border-radius: 24px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 24px;
+  box-shadow: 0 4px 16px rgba(25,118,210,0.15);
+}
+.landing-icon svg { width: 44px; height: 44px; color: var(--primary); }
+.landing-title {
+  font-family: 'Nunito', sans-serif; font-size: 36px; font-weight: 900;
+  color: var(--text); line-height: 1.1; margin-bottom: 8px;
+}
+.landing-title .highlight { color: var(--primary); }
+.landing-tagline { font-size: 17px; color: var(--text-secondary); margin-bottom: 36px; line-height: 1.5; }
+.feature-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 36px; }
+.feature-pill {
+  display: flex; align-items: center; gap: 8px; padding: 10px 18px;
+  background: var(--primary-ghost); border: 1px solid rgba(25,118,210,0.12);
+  border-radius: 30px; font-size: 14px; font-weight: 500; color: var(--primary-dark); transition: all 0.2s;
+}
+.feature-pill svg { width: 18px; height: 18px; flex-shrink: 0; }
+.feature-pill:hover { background: var(--primary-light); }
+.cta-btn {
+  width: 100%; max-width: 320px; padding: 16px 32px; background: var(--primary);
+  color: #fff; border: none; border-radius: 28px; font-family: 'Nunito', sans-serif;
+  font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(25,118,210,0.3); position: relative; overflow: hidden;
+}
+.cta-btn:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(25,118,210,0.35); }
+.cta-btn:active { transform: translateY(0); }
+.cta-btn .shimmer {
+  position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer { 0% { left: -100%; } 40%, 100% { left: 100%; } }
+.landing-note { margin-top: 16px; font-size: 13px; color: var(--text-muted); }
+.landing-note span { margin: 0 4px; }
+
+/* ===== CAMERA ===== */
+#camera-screen { background: #0A0E17; position: relative; }
+#camera-feed { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+#camera-canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; display: none; }
+.camera-top-bar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; padding-top: calc(14px + var(--safe-area-top));
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+}
+.camera-top-bar .logo { color: #fff; font-size: 18px; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+.camera-close-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
+  border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.camera-frame-overlay {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: center; pointer-events: none;
+}
+.scan-frame {
+  width: 85%; height: 35%; max-width: 360px; max-height: 260px;
+  border: 2px solid transparent; border-radius: 20px; position: relative;
+}
+.scan-frame::before, .scan-frame::after {
+  content: ''; position: absolute; width: 28px; height: 28px;
+  border-color: var(--primary); border-style: solid;
+}
+.scan-frame::before { top: -2px; right: -2px; border-width: 3px 3px 0 0; border-radius: 0 20px 0 0; }
+.scan-frame::after { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; border-radius: 0 0 0 20px; }
+.scan-frame-corner-tr, .scan-frame-corner-bl {
+  position: absolute; width: 28px; height: 28px; border-color: var(--primary); border-style: solid;
+}
+.scan-frame-corner-tr { top: -2px; left: -2px; border-width: 3px 0 0 3px; border-radius: 20px 0 0 0; }
+.scan-frame-corner-bl { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; border-radius: 0 0 20px 0; }
+.camera-hint {
+  position: absolute; bottom: 160px; left: 0; right: 0; text-align: center; z-index: 8; pointer-events: none;
+}
+.camera-hint span {
+  background: rgba(0,0,0,0.55); color: rgba(255,255,255,0.85);
+  padding: 8px 20px; border-radius: 20px; font-size: 14px; backdrop-filter: blur(8px);
+}
+.camera-controls {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 10;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 0 20px calc(28px + var(--safe-area-bottom)); gap: 14px;
+}
+.scan-mode-toggle {
+  display: flex; gap: 0; background: rgba(0,0,0,0.4); border-radius: 24px;
+  overflow: hidden; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);
+}
+.scan-mode-btn {
+  padding: 10px 22px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.55);
+  background: transparent; border: none; cursor: pointer; transition: all 0.25s;
+  font-family: 'Rubik', sans-serif; white-space: nowrap;
+}
+.scan-mode-btn.active { color: #fff; background: var(--primary); border-radius: 24px; }
+.capture-btn {
+  width: 68px; height: 68px; border-radius: 50%; background: var(--primary);
+  border: 4px solid rgba(255,255,255,0.85); cursor: pointer; transition: transform 0.15s;
+  position: relative; box-shadow: 0 4px 16px rgba(25,118,210,0.4);
+}
+.capture-btn:active { transform: scale(0.9); }
+.capture-btn::after {
+  content: ''; position: absolute; inset: 5px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+.paste-instead {
+  color: rgba(255,255,255,0.6); font-size: 14px; cursor: pointer; text-decoration: none;
+  background: none; border: none; font-family: 'Rubik', sans-serif; transition: color 0.2s;
+}
+.paste-instead:hover { color: #fff; }
+.camera-error {
+  position: absolute; inset: 0; z-index: 15; display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  background: #0A0E17; gap: 16px; padding: 24px; text-align: center;
+}
+.camera-error svg { width: 56px; height: 56px; color: var(--text-muted); margin-bottom: 8px; }
+.camera-error p { color: rgba(255,255,255,0.6); font-size: 15px; line-height: 1.6; }
+.camera-error .btn-primary {
+  padding: 14px 28px; border-radius: 28px; font-size: 15px; font-weight: 600;
+  cursor: pointer; border: none; font-family: 'Rubik', sans-serif; background: var(--primary); color: #fff;
+}
+.camera-processing {
+  position: absolute; inset: 0; z-index: 20; display: none;
+  align-items: center; justify-content: center; background: rgba(10,14,23,0.75); backdrop-filter: blur(6px);
+}
+.camera-processing.active { display: flex; }
+.processing-content { text-align: center; color: #fff; }
+.processing-content .pulse-dots { margin-bottom: 14px; }
+.processing-content p { font-size: 15px; opacity: 0.85; }
+
+/* ===== PASTE ===== */
+#paste-screen { padding: 0 20px; }
+.paste-header { text-align: center; padding: 32px 0 24px; }
+.paste-header h2 { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.paste-header p { font-size: 14px; color: var(--text-muted); }
+.input-card {
+  background: var(--surface); border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+}
+.input-card label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; }
+.input-card textarea {
+  width: 100%; min-height: 140px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px; font-size: 15px;
+  font-family: 'Rubik', sans-serif; resize: vertical; background: var(--bg);
+  color: var(--text); transition: border-color 0.2s; direction: ltr; text-align: left;
+}
+.input-card textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(25,118,210,0.1); }
+.input-card textarea::placeholder { color: var(--text-muted); }
+.submit-btn {
+  width: 100%; margin-top: 14px; padding: 15px; background: var(--primary);
+  color: #fff; border: none; border-radius: 28px; font-family: 'Nunito', sans-serif;
+  font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(25,118,210,0.25);
+}
+.submit-btn:hover { background: var(--primary-dark); }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.paste-links { display: flex; justify-content: center; gap: 20px; margin-top: 14px; }
+.paste-links button {
+  font-size: 14px; color: var(--primary); cursor: pointer; text-decoration: none;
+  background: none; border: none; font-family: 'Rubik', sans-serif; font-weight: 500;
+}
+.paste-links button:hover { text-decoration: underline; }
+
+/* ===== LOADING ===== */
+#loading-screen { align-items: center; justify-content: center; background: var(--surface); }
+.loading-content { text-align: center; padding: 40px; }
+.loading-icon { width: 72px; height: 72px; margin: 0 auto 28px; position: relative; }
+.loading-spinner {
+  width: 72px; height: 72px; border: 3px solid var(--primary-light);
+  border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-icon svg {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 32px; height: 32px; color: var(--primary);
+}
+.pulse-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.pulse-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--primary); animation: pulse 1.4s ease-in-out infinite; }
+.pulse-dots span:nth-child(2) { animation-delay: 0.2s; }
+.pulse-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse { 0%, 80%, 100% { transform: scale(0.5); opacity: 0.3; } 40% { transform: scale(1); opacity: 1; } }
+.loading-text { font-size: 16px; color: var(--text-secondary); font-weight: 500; }
+.loading-sub { font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+
+/* ===== RESULTS ===== */
+#results-screen { padding: 0; background: var(--bg); }
+.results-container { padding: 0 16px 40px; padding-bottom: calc(40px + var(--safe-area-bottom)); }
+.verdict-card {
+  background: var(--surface); border-radius: 20px; padding: 28px 20px 24px;
+  text-align: center; margin-bottom: 20px; box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border); position: relative; overflow: hidden;
+}
+.verdict-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
+.verdict-card.level-green::before { background: var(--safe); }
+.verdict-card.level-yellow::before { background: var(--caution); }
+.verdict-card.level-red::before { background: var(--concern); }
+
+.score-ring-wrap { position: relative; width: 130px; height: 130px; margin: 0 auto 16px; }
+.score-ring-wrap svg { width: 130px; height: 130px; }
+.score-ring-bg { fill: none; stroke: var(--border); stroke-width: 10; }
+.score-ring-fill {
+  fill: none; stroke-width: 10; stroke-linecap: round;
+  transform: rotate(-90deg); transform-origin: 50% 50%;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.score-ring-fill.green { stroke: var(--safe); }
+.score-ring-fill.yellow { stroke: var(--caution); }
+.score-ring-fill.red { stroke: var(--concern); }
+.score-number {
+  position: absolute; top: 44%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 42px; color: var(--text); line-height: 1;
+}
+.score-label {
+  position: absolute; top: 68%; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; white-space: nowrap;
+}
+.verdict-title { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.verdict-title.green { color: var(--safe); }
+.verdict-title.yellow { color: var(--caution); }
+.verdict-title.red { color: var(--concern); }
+.verdict-summary { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; }
+.verdict-stats { display: flex; justify-content: center; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+.verdict-stat { text-align: center; min-width: 52px; }
+.verdict-stat .num { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; }
+.verdict-stat .num.green { color: var(--safe); }
+.verdict-stat .num.yellow { color: var(--caution); }
+.verdict-stat .num.red { color: var(--concern); }
+.verdict-stat .num.gray { color: var(--gray); }
+.verdict-stat .label { font-size: 11px; color: var(--text-muted); margin-top: 2px; font-weight: 500; }
+.action-row { display: flex; gap: 10px; width: 100%; }
+.action-btn {
+  flex: 1; padding: 12px 0; border-radius: 28px; font-family: 'Rubik', sans-serif;
+  font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.action-btn svg { width: 18px; height: 18px; }
+.action-btn.filled { background: var(--primary); color: #fff; border: none; box-shadow: 0 2px 8px rgba(25,118,210,0.2); }
+.action-btn.filled:hover { background: var(--primary-dark); }
+.action-btn.outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+.action-btn.outline:hover { background: var(--primary-ghost); }
+
+.section-label {
+  font-size: 13px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.6px; margin: 24px 0 10px; display: flex; align-items: center; gap: 8px;
+}
+.section-label .dot { width: 8px; height: 8px; border-radius: 50%; }
+.section-label.red { color: var(--concern); }
+.section-label.red .dot { background: var(--concern); }
+.section-label.yellow { color: var(--caution); }
+.section-label.yellow .dot { background: var(--caution); }
+.section-label.green { color: var(--safe); }
+.section-label.green .dot { background: var(--safe); }
+.section-label.gray { color: var(--gray); }
+.section-label.gray .dot { background: var(--gray); }
+
+.ingredient-card {
+  background: var(--surface); border-radius: var(--radius-sm); padding: 14px 16px;
+  margin-bottom: 8px; border: 1px solid var(--border); border-right: 4px solid var(--border);
+  cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s;
+}
+[dir="ltr"] .ingredient-card { border-right: 1px solid var(--border); border-left: 4px solid var(--border); }
+.ingredient-card.level-green { border-right-color: var(--safe); }
+.ingredient-card.level-yellow { border-right-color: var(--caution); }
+.ingredient-card.level-red { border-right-color: var(--concern); }
+.ingredient-card.level-gray { border-right-color: var(--gray); }
+[dir="ltr"] .ingredient-card.level-green { border-left-color: var(--safe); border-right-color: var(--border); }
+[dir="ltr"] .ingredient-card.level-yellow { border-left-color: var(--caution); border-right-color: var(--border); }
+[dir="ltr"] .ingredient-card.level-red { border-left-color: var(--concern); border-right-color: var(--border); }
+[dir="ltr"] .ingredient-card.level-gray { border-left-color: var(--gray); border-right-color: var(--border); }
+.ingredient-card:active { box-shadow: var(--shadow); }
+
+.card-top { display: flex; align-items: center; gap: 10px; }
+.card-name { font-weight: 600; font-size: 15px; flex: 1; min-width: 0; }
+.card-badges { display: flex; gap: 4px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+.badge {
+  display: inline-flex; align-items: center; padding: 3px 10px;
+  border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+}
+.badge.e-number { background: var(--primary-ghost); color: var(--primary); }
+.badge.green { background: var(--safe-bg); color: var(--safe); }
+.badge.yellow { background: var(--caution-bg); color: var(--caution); }
+.badge.red { background: var(--concern-bg); color: var(--concern); }
+.badge.gray { background: var(--gray-bg); color: var(--gray); }
+.card-function { font-size: 13px; color: var(--text-secondary); margin-top: 6px; line-height: 1.4; }
+.card-expand { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); margin-top: 8px; font-weight: 500; }
+.card-expand svg { width: 14px; height: 14px; transition: transform 0.2s; }
+.ingredient-card.expanded .card-expand svg { transform: rotate(180deg); }
+[dir="rtl"] .ingredient-card.expanded .card-expand svg { transform: rotate(-180deg); }
+.card-details { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+.ingredient-card.expanded .card-details { display: block; }
+.detail-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; font-size: 13px; gap: 12px; }
+.detail-label { color: var(--text-muted); font-weight: 500; white-space: nowrap; flex-shrink: 0; }
+.detail-value { text-align: right; }
+[dir="rtl"] .detail-value { text-align: left; }
+.detail-why { flex-direction: column; gap: 4px; }
+.detail-concerns { color: var(--text); font-size: 13px; line-height: 1.5; text-align: start; }
+.level-red .detail-concerns { color: #c0392b; }
+.level-yellow .detail-concerns { color: #7f6c00; }
+.level-green .detail-concerns { color: #27ae60; }
+.detail-warnings { display: flex; flex-direction: column; gap: 6px; margin: 8px 0; }
+.detail-warning { font-size: 12px; padding: 6px 10px; border-radius: 8px; background: rgba(255,165,0,0.08); border: 1px solid rgba(255,165,0,0.15); color: #b8860b; }
+.warn-allergen { background: rgba(231,76,60,0.08); border-color: rgba(231,76,60,0.15); color: #c0392b; }
+.warn-children { background: rgba(155,89,182,0.08); border-color: rgba(155,89,182,0.15); color: #8e44ad; }
+.warn-pregnancy { background: rgba(230,126,34,0.08); border-color: rgba(230,126,34,0.15); color: #d35400; }
+.warn-hyperactivity { background: rgba(241,196,15,0.08); border-color: rgba(241,196,15,0.2); color: #7f6c00; }
+.detail-value { color: var(--text); font-weight: 600; text-align: left; max-width: 60%; }
+[dir="rtl"] .detail-value { text-align: right; }
+
+.history-section { padding: 24px 20px; padding-bottom: calc(24px + var(--safe-area-bottom)); }
+.history-section h3 { font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text); }
+.history-item {
+  display: flex; align-items: center; gap: 12px; padding: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); margin-bottom: 8px; cursor: pointer; transition: box-shadow 0.2s;
+}
+.history-item:hover { box-shadow: var(--shadow-sm); }
+.history-score {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; color: #fff; flex-shrink: 0;
+}
+.history-score.green { background: var(--safe); }
+.history-score.yellow { background: var(--caution); }
+.history-score.red { background: var(--concern); }
+.history-info { flex: 1; min-width: 0; }
+.history-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+.powered-by { text-align: center; padding: 20px; font-size: 12px; color: var(--text-muted); }
+.powered-by strong { color: var(--primary); font-weight: 700; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.animate-in { animation: fadeIn 0.4s ease forwards; }
+.animate-up { animation: slideUp 0.5s ease forwards; }
+.stagger-1 { animation-delay: 0.05s; opacity: 0; }
+.stagger-2 { animation-delay: 0.1s; opacity: 0; }
+.stagger-3 { animation-delay: 0.15s; opacity: 0; }
+.stagger-4 { animation-delay: 0.2s; opacity: 0; }
+
+.install-banner {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 16px 20px; padding-bottom: calc(16px + var(--safe-area-bottom));
+  z-index: 100; box-shadow: 0 -2px 16px rgba(0,0,0,0.08); align-items: center; gap: 12px;
+}
+.install-banner.show { display: flex; }
+.install-banner-text { flex: 1; }
+.install-banner-text strong { display: block; font-size: 14px; margin-bottom: 2px; }
+.install-banner-text span { font-size: 12px; color: var(--text-muted); }
+.install-banner-btn {
+  padding: 10px 20px; background: var(--primary); color: #fff; border: none;
+  border-radius: 24px; font-family: 'Rubik', sans-serif; font-size: 14px;
+  font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.install-banner-close { background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px; }
+
+/* ===== BARCODE SCAN LINE ===== */
+.scan-line {
+  position: absolute; left: 10%; right: 10%; height: 2px;
+  background: var(--primary); box-shadow: 0 0 8px var(--primary), 0 0 20px rgba(25,118,210,0.3);
+  border-radius: 2px; animation: scanLine 2s ease-in-out infinite;
+  z-index: 5; pointer-events: none; display: none;
+}
+.scan-line.active { display: block; }
+@keyframes scanLine {
+  0%, 100% { top: 30%; opacity: 0.6; }
+  50% { top: 65%; opacity: 1; }
+}
+
+.barcode-status {
+  position: absolute; top: calc(50% + 80px); left: 0; right: 0;
+  text-align: center; z-index: 8; pointer-events: none;
+}
+.barcode-status span {
+  background: rgba(25,118,210,0.85); color: #fff;
+  padding: 6px 16px; border-radius: 16px; font-size: 13px;
+  font-weight: 600; backdrop-filter: blur(8px);
+}
+
+/* ── Product Info Card (barcode enriched data) ── */
+.product-info-card {
+  background: var(--surface); border-radius: var(--radius); padding: 16px;
+  margin-bottom: 12px; box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.product-info-inner { display: flex; gap: 14px; align-items: flex-start; }
+.product-thumb {
+  width: 64px; height: 64px; border-radius: 10px; object-fit: cover;
+  border: 1px solid var(--border); flex-shrink: 0;
+}
+.product-text { flex: 1; min-width: 0; }
+.product-name { font-weight: 700; font-size: 16px; color: var(--text); line-height: 1.3; }
+.product-brand { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+.product-badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.nutri-badge, .nova-badge {
+  padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.nutri-badge { color: #fff; }
+.grade-a { background: #1E8F4E; }
+.grade-b { background: #85BB2F; }
+.grade-c { background: #FECB02; color: #333; }
+.grade-d { background: #EE8100; }
+.grade-e { background: #E63E11; }
+.nova-badge { border: 1.5px solid var(--border); color: var(--text); background: var(--bg); }
+.nova-1 { border-color: var(--safe); color: var(--safe); }
+.nova-2 { border-color: #85BB2F; color: #6a9526; }
+.nova-3 { border-color: var(--caution); color: #e69500; }
+.nova-4 { border-color: var(--concern); color: var(--concern); font-weight: 800; }
+.source-label {
+  font-size: 11px; color: var(--text-muted); margin-top: 10px;
+  padding-top: 8px; border-top: 1px solid var(--border);
+}
+
+/* ── FOPL Warning Card ── */
+.fopl-card {
+  background: var(--concern-bg); border: 1.5px solid var(--concern-border);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+.fopl-title {
+  font-weight: 700; font-size: 14px; color: var(--concern);
+  margin-bottom: 10px;
+}
+.fopl-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+.fopl-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--concern-border);
+  border-radius: 10px; padding: 8px 12px; flex: 1; min-width: 140px;
+}
+.fopl-icon { font-size: 20px; flex-shrink: 0; }
+.fopl-label { font-weight: 600; font-size: 13px; color: var(--concern); }
+.fopl-val { font-size: 12px; color: var(--text-secondary); }
+
+/* ── Nutrition Card ── */
+.nutrition-card {
+  background: var(--surface); border-radius: var(--radius); padding: 16px;
+  margin-bottom: 12px; box-shadow: var(--shadow); border: 1px solid var(--border);
+}
+.nutrition-title {
+  font-weight: 700; font-size: 14px; color: var(--text);
+  margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+.nutrition-grid { display: flex; flex-direction: column; gap: 0; }
+.nut-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.nut-row:last-child { border-bottom: none; }
+.nut-label { font-size: 13px; color: var(--text-secondary); }
+.nut-value { font-size: 13px; font-weight: 600; color: var(--text); }
+.nut-value.high { color: var(--concern); font-weight: 700; }
+
+/* ── Allergen Card ── */
+.allergen-card {
+  background: #FFF8E1; border: 1.5px solid rgba(255,167,38,0.3);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px;
+}
+.allergen-title, .traces-title {
+  font-weight: 700; font-size: 14px; color: #E65100; margin-bottom: 8px;
+}
+.traces-title { margin-top: 12px; color: var(--text-secondary); font-size: 13px; }
+.allergen-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.allergen-badge {
+  padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  background: #FFE0B2; color: #E65100; text-transform: capitalize;
+}
+.allergen-badge.trace {
+  background: rgba(0,0,0,0.05); color: var(--text-secondary);
+}
+
+/* ===== SHARE CARD ===== */
+#share-card-container {
+  position: fixed; left: -9999px; top: 0; z-index: -1;
+  pointer-events: none;
+}
+.share-card {
+  width: 420px; padding: 0; background: #fff;
+  font-family: 'Rubik', 'Nunito', sans-serif;
+  direction: rtl; overflow: hidden;
+}
+.share-card-header {
+  background: linear-gradient(135deg, #1565C0 0%, #1976D2 40%, #2196F3 100%);
+  padding: 28px 24px 20px;
+  text-align: center; color: #fff;
+}
+.share-card-logo {
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 20px; letter-spacing: -0.3px; margin-bottom: 16px;
+  opacity: 0.9;
+}
+.share-card-ring {
+  width: 110px; height: 110px; margin: 0 auto 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.share-card-ring-track {
+  position: absolute; inset: 4px; border-radius: 50%;
+  background: conic-gradient(var(--ring-color, #4CAF50) var(--ring-pct, 0%), rgba(255,255,255,0.2) var(--ring-pct, 0%));
+}
+.share-card-ring-center {
+  position: relative; z-index: 1;
+  width: 80px; height: 80px; border-radius: 50%;
+  background: #fff; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.share-card-score {
+  font-family: 'Nunito', sans-serif; font-weight: 900;
+  font-size: 32px; line-height: 1; color: var(--ring-color, #1976D2);
+}
+.share-card-of { font-size: 11px; color: #90A4AE; }
+.share-card-verdict {
+  font-size: 18px; font-weight: 700; margin-top: 4px;
+}
+.share-card-product {
+  padding: 14px 24px; background: #F5F7FA; font-size: 14px;
+  color: #546E7A; text-align: center; font-weight: 500;
+  border-bottom: 1px solid #E8ECF0;
+}
+.share-card-body { padding: 18px 24px 14px; }
+.share-card-stats {
+  display: flex; justify-content: space-around; text-align: center;
+  margin-bottom: 16px;
+}
+.share-card-stat-num {
+  font-family: 'Nunito', sans-serif; font-weight: 800;
+  font-size: 22px; line-height: 1.1;
+}
+.share-card-stat-num.green { color: #4CAF50; }
+.share-card-stat-num.yellow { color: #FFA726; }
+.share-card-stat-num.red { color: #E53935; }
+.share-card-stat-label { font-size: 11px; color: #90A4AE; margin-top: 2px; }
+.share-card-flags {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; justify-content: center;
+}
+.share-card-flag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 600;
+}
+.share-card-flag.red { background: rgba(229,57,53,0.1); color: #C62828; }
+.share-card-flag.yellow { background: rgba(255,167,38,0.1); color: #E65100; }
+.share-card-flag.green { background: rgba(76,175,80,0.1); color: #2E7D32; }
+.share-card-footer {
+  padding: 14px 24px;
+  background: #F5F7FA;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid #E8ECF0;
+}
+.share-card-url { font-size: 12px; color: #90A4AE; font-weight: 500; }
+.share-card-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; color: #1976D2; font-weight: 600;
+  background: rgba(25,118,210,0.08); padding: 4px 10px; border-radius: 6px;
+}
+.share-generating {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.share-generating-inner {
+  background: #fff; padding: 20px 32px; border-radius: 16px;
+  font-family: 'Rubik', sans-serif; font-size: 15px; color: #1A2332;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+/* ===== FOOD DYE CHECKER ===== */
+#dye-screen { padding: 0 20px; }
+.dye-header { text-align: center; padding: 32px 0 20px; }
+.dye-header h2 { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.dye-header p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.dye-badge {
+  display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #FF6B35, #E53935);
+  color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 5px 14px;
+  border-radius: 20px; margin-bottom: 12px; text-transform: uppercase;
+}
+.dye-tabs {
+  display: flex; gap: 0; margin-bottom: 16px; border-radius: var(--radius-sm); overflow: hidden;
+  border: 1px solid var(--border); background: var(--bg);
+}
+.dye-tab {
+  flex: 1; padding: 10px 0; font-size: 13px; font-weight: 600; text-align: center;
+  border: none; background: none; cursor: pointer; color: var(--text-secondary); transition: all 0.2s;
+}
+.dye-tab.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-sm); }
+.dye-input-card {
+  background: var(--surface); border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+}
+.dye-input-card label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; }
+.dye-input-card input, .dye-input-card textarea {
+  width: 100%; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+  font-family: 'Rubik', sans-serif; font-size: 15px; background: var(--bg); direction: ltr;
+}
+.dye-input-card textarea { min-height: 100px; resize: vertical; }
+.dye-input-card input:focus, .dye-input-card textarea:focus { outline: none; border-color: #E53935; box-shadow: 0 0 0 3px rgba(229,57,53,0.1); }
+.dye-links { display: flex; justify-content: center; gap: 20px; margin-top: 14px; }
+.dye-links button {
+  background: none; border: none; color: var(--primary); font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Rubik', sans-serif; padding: 4px;
+}
+.dye-links button:hover { text-decoration: underline; }
+.dye-result-card {
+  background: var(--surface); border-radius: var(--radius); padding: 16px;
+  border: 1px solid var(--border); border-right: 4px solid var(--border);
+  box-shadow: var(--shadow-sm); margin-bottom: 10px;
+}
+[dir="ltr"] .dye-result-card { border-right: 1px solid var(--border); border-left: 4px solid var(--border); }
+.dye-result-card.safe { border-right-color: var(--safe); }
+.dye-result-card.caution { border-right-color: var(--caution); }
+.dye-result-card.concern { border-right-color: var(--concern); }
+[dir="ltr"] .dye-result-card.safe { border-left-color: var(--safe); border-right-color: var(--border); }
+[dir="ltr"] .dye-result-card.caution { border-left-color: var(--caution); border-right-color: var(--border); }
+[dir="ltr"] .dye-result-card.concern { border-left-color: var(--concern); border-right-color: var(--border); }
+.dye-name { font-weight: 700; font-size: 16px; }
+.dye-e-number { font-size: 13px; color: var(--text-secondary); font-weight: 600; }
+.dye-color-dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; vertical-align: middle; margin: 0 6px; border: 1px solid rgba(0,0,0,0.1); }
+.dye-type-badge {
+  display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px;
+  text-transform: uppercase; letter-spacing: 0.3px;
+}
+.dye-type-badge.synthetic { background: var(--concern-bg); color: var(--concern); }
+.dye-type-badge.natural { background: var(--safe-bg); color: var(--safe); }
+.dye-status-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.dye-status-chip {
+  font-size: 12px; padding: 4px 10px; border-radius: 8px; font-weight: 600;
+}
+.dye-status-chip.banned { background: var(--concern-bg); color: var(--concern); }
+.dye-status-chip.phase-out { background: #FFF3E0; color: #E65100; }
+.dye-status-chip.eu-warning { background: #FFF8E1; color: #F57F17; }
+.dye-status-chip.approved { background: var(--safe-bg); color: var(--safe); }
+.dye-concerns { font-size: 13px; color: var(--text-secondary); margin-top: 8px; line-height: 1.5; }
+.dye-clean-card {
+  background: var(--safe-bg); border: 1px solid var(--safe-border); border-radius: var(--radius);
+  padding: 32px 20px; text-align: center; margin: 16px 0;
+}
+.dye-clean-card h3 { color: var(--safe); font-size: 20px; margin-bottom: 8px; }
+.dye-clean-card p { color: var(--text-secondary); font-size: 14px; }
+
+/* ===== iHerb CHECKER ===== */
+#iherb-screen { padding: 0 20px; }
+.iherb-header { text-align: center; padding: 32px 0 20px; }
+.iherb-header h2 { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.iherb-header p { font-size: 14px; color: var(--text-muted); line-height: 1.5; }
+.iherb-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, #4CAF50, #388E3C); color: #fff;
+  padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+  margin-bottom: 12px; letter-spacing: 0.3px;
+}
+.iherb-input-card {
+  background: var(--surface); border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+}
+.iherb-input-card label { display: block; font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 10px; }
+.iherb-input-card input {
+  width: 100%; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 14px; font-size: 15px;
+  font-family: 'Rubik', sans-serif; background: var(--bg);
+  color: var(--text); transition: border-color 0.2s; direction: ltr; text-align: left;
+}
+.iherb-input-card input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(25,118,210,0.1); }
+.iherb-input-card input::placeholder { color: var(--text-muted); }
+.iherb-links { display: flex; justify-content: center; gap: 20px; margin-top: 14px; }
+.iherb-links button {
+  font-size: 14px; color: var(--primary); cursor: pointer; text-decoration: none;
+  background: none; border: none; font-family: 'Rubik', sans-serif; font-weight: 500;
+}
+.iherb-links button:hover { text-decoration: underline; }
+
+/* iHerb result ingredient row */
+.iherb-ing-card {
+  background: var(--surface); border-radius: var(--radius-sm); padding: 14px 16px;
+  margin-bottom: 8px; border: 1px solid var(--border); border-right: 4px solid var(--border);
+}
+[dir="ltr"] .iherb-ing-card { border-right: 1px solid var(--border); border-left: 4px solid var(--border); }
+.iherb-ing-card.safe { border-right-color: var(--safe); }
+.iherb-ing-card.caution { border-right-color: var(--caution); }
+.iherb-ing-card.concern { border-right-color: var(--concern); }
+[dir="ltr"] .iherb-ing-card.safe { border-left-color: var(--safe); border-right-color: var(--border); }
+[dir="ltr"] .iherb-ing-card.caution { border-left-color: var(--caution); border-right-color: var(--border); }
+[dir="ltr"] .iherb-ing-card.concern { border-left-color: var(--concern); border-right-color: var(--border); }
+.iherb-ing-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.iherb-ing-name { font-weight: 600; font-size: 15px; flex: 1; min-width: 0; }
+.iherb-ing-he { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+.iherb-ing-amount { font-size: 13px; color: var(--text-secondary); font-weight: 500; white-space: nowrap; }
+.iherb-ing-dv { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.iherb-flag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 8px; font-size: 11px; font-weight: 700;
+  margin-top: 6px; margin-left: 4px;
+}
+[dir="rtl"] .iherb-flag { margin-left: 0; margin-right: 4px; }
+.iherb-flag.high { background: var(--concern-bg); color: var(--concern); }
+.iherb-flag.medium { background: var(--caution-bg); color: var(--caution); }
+.iherb-flag.info { background: var(--safe-bg); color: var(--safe); }
+.iherb-info-card {
+  background: var(--surface); border-radius: var(--radius); padding: 16px;
+  margin-bottom: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+}
+.iherb-info-title { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 8px; }
+.iherb-info-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; direction: ltr; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- ===== LANDING SCREEN ===== -->
+<div id="landing-screen" class="screen active">
+  <div class="top-bar">
+    <div class="logo">Healthy<span class="accent">Scan</span></div>
+    <button class="lang-toggle" id="lang-toggle" onclick="toggleLanguage()">EN</button>
+  </div>
+  <div class="landing-content">
+    <div class="landing-bg"></div>
+    <div class="landing-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <h1 class="landing-title" data-i18n="appTitle">Healthy<span class="highlight">Scan</span></h1>
+    <p class="landing-tagline" data-i18n="tagline">כי מגיע לך לדעת מה אתה אוכל</p>
+    <div class="feature-pills">
+      <div class="feature-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h0M7 12h0M7 17h0M12 7h0M12 12h0M12 17h0M17 7h0M17 12h0M17 17h0"/></svg>
+        <span data-i18n="pillBarcode">סרוק ברקוד</span>
+      </div>
+      <div class="feature-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M6 21v-2a6 6 0 0 1 6-6"/></svg>
+        <span data-i18n="pillPhoto">צלם רכיבים</span>
+      </div>
+      <div class="feature-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+        <span data-i18n="pillPaste">הדבק רשימה</span>
+      </div>
+    </div>
+    <button class="cta-btn" onclick="showScreen('camera-screen')">
+      <span class="shimmer"></span>
+      <span data-i18n="ctaStart">התחל סריקה</span>
+    </button>
+    <!-- iHerb checker moved to iherbchecker.com -->
+    <a href="https://iherbchecker.com" target="_blank" rel="noopener" class="cta-btn" style="margin-top:10px;background:linear-gradient(135deg,#4CAF50,#388E3C);box-shadow:0 4px 16px rgba(76,175,80,0.3);text-decoration:none;display:flex;align-items:center;justify-content:center;">
+      <span class="shimmer"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;vertical-align:middle;margin-left:6px"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      <span data-i18n="iherbPill">בדוק תוסף iHerb</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;margin-right:6px;opacity:.6"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
+    <button class="cta-btn" onclick="showScreen('dye-screen')" style="margin-top:10px;background:linear-gradient(135deg,#FF6B35,#E53935);box-shadow:0 4px 16px rgba(229,57,53,0.3);">
+      <span class="shimmer"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;vertical-align:middle;margin-left:6px"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      <span data-i18n="dyePill">בודק צבעי מאכל</span>
+    </button>
+    <p class="landing-note">
+      <span data-i18n="noteFree">חינם לשימוש</span>
+      <span>·</span>
+      <span data-i18n="noteNoSignup">ללא הרשמה</span>
+    </p>
+  </div>
+  <div class="history-section" id="history-section" style="display:none;">
+    <h3 data-i18n="recentScans">סריקות אחרונות</h3>
+    <div id="history-list"></div>
+  </div>
+  <div class="powered-by">Powered by <strong>HealthyScan</strong></div>
+</div>
+
+<!-- ===== CAMERA SCREEN ===== -->
+<div id="camera-screen" class="screen">
+  <video id="camera-feed" autoplay playsinline></video>
+  <canvas id="camera-canvas"></canvas>
+  <div class="camera-top-bar">
+    <button class="camera-close-btn" onclick="showScreen('landing-screen'); stopCamera();">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="logo">Healthy<span class="accent">Scan</span></div>
+    <div style="width:36px"></div>
+  </div>
+  <div class="camera-frame-overlay">
+    <div class="scan-frame">
+      <div class="scan-frame-corner-tr"></div>
+      <div class="scan-frame-corner-bl"></div>
+      <div class="scan-line" id="scan-line"></div>
+    </div>
+  </div>
+  <div class="barcode-status" id="barcode-status" style="display:none;">
+    <span data-i18n="scanningBarcode">סורק ברקוד...</span>
+  </div>
+  <div class="camera-hint">
+    <span data-i18n="cameraHint">כוון את הרכיבים למסגרת</span>
+  </div>
+  <div class="camera-controls">
+    <div class="scan-mode-toggle">
+      <button class="scan-mode-btn active" data-mode="barcode" onclick="setScanMode('barcode')" data-i18n="modeBarcode">ברקוד</button>
+      <button class="scan-mode-btn" data-mode="ingredients" onclick="setScanMode('ingredients')" data-i18n="modeIngredients">רכיבים</button>
+    </div>
+    <button class="capture-btn" id="capture-btn" onclick="capturePhoto()"></button>
+    <button class="paste-instead" onclick="showScreen('paste-screen')" data-i18n="pasteInstead">הדבק במקום</button>
+  </div>
+  <div class="camera-error" id="camera-error">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+      <circle cx="12" cy="13" r="4"/>
+      <path d="M1 1l22 22"/>
+    </svg>
+    <p data-i18n="cameraErrorText">לא ניתן לגשת למצלמה. אנא אפשר גישה בהגדרות הדפדפן.</p>
+    <button class="btn-primary" onclick="showScreen('paste-screen')" data-i18n="cameraErrorBtn">הדבק רשימת רכיבים</button>
+  </div>
+  <div class="camera-processing" id="camera-processing">
+    <div class="processing-content">
+      <div class="pulse-dots"><span></span><span></span><span></span></div>
+      <p data-i18n="processingText">מנתח תמונה...</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PASTE SCREEN ===== -->
+<div id="paste-screen" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('landing-screen')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span data-i18n="back">חזרה</span>
+    </button>
+    <div class="logo">Healthy<span class="accent">Scan</span></div>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="lang-toggle-paste">EN</button>
+  </div>
+  <div class="paste-header">
+    <h2 data-i18n="pasteTitle">הדבק רכיבים</h2>
+    <p data-i18n="pasteSubtitle">העתק את רשימת הרכיבים מהאריזה</p>
+  </div>
+  <div class="input-card">
+    <label data-i18n="ingredientsLabel">רשימת רכיבים</label>
+    <textarea id="ingredients-input" dir="auto" placeholder="הדבק כאן את רשימת הרכיבים..." data-i18n-placeholder="inputPlaceholder"></textarea>
+    <button class="submit-btn" id="submit-btn" onclick="analyzeIngredients()" disabled data-i18n="submitBtn">בדוק מוצר</button>
+  </div>
+  <div class="paste-links">
+    <button onclick="loadExample()" data-i18n="tryExample">נסו דוגמה</button>
+    <button onclick="showScreen('camera-screen'); startCamera();" data-i18n="useCamera">צלם במקום</button>
+  </div>
+</div>
+
+<!-- ===== iHerb CHECKER SCREEN ===== -->
+<!-- ===== FOOD DYE CHECKER SCREEN ===== -->
+<div id="dye-screen" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('landing-screen')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span data-i18n="back">חזרה</span>
+    </button>
+    <div class="logo">Healthy<span class="accent">Scan</span></div>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="lang-toggle-dye">EN</button>
+  </div>
+  <div class="dye-header">
+    <div class="dye-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2"/></svg>
+      Food Dye Safety
+    </div>
+    <h2 data-i18n="dyeTitle">בודק צבעי מאכל</h2>
+    <p data-i18n="dyeSubtitle">בדקו אם צבע מאכל בטוח — חפשו שם או הדביקו רשימת רכיבים</p>
+  </div>
+  <div class="dye-tabs">
+    <button class="dye-tab active" id="dye-tab-search" onclick="switchDyeTab('search')" data-i18n="dyeSearchTab">חיפוש צבע</button>
+    <button class="dye-tab" id="dye-tab-scan" onclick="switchDyeTab('scan')" data-i18n="dyeScanTab">סריקת רכיבים</button>
+  </div>
+  <div class="dye-input-card" id="dye-search-panel">
+    <label data-i18n="dyeSearchTab">חיפוש צבע</label>
+    <input type="text" id="dye-search-input" dir="ltr" placeholder="Red 40, E129, Tartrazine..." data-i18n-placeholder="dyeSearchPlaceholder">
+    <button class="submit-btn" id="dye-search-btn" onclick="checkDye('search')" disabled data-i18n="dyeSubmitSearch" style="background:linear-gradient(135deg,#FF6B35,#E53935);">בדוק צבע</button>
+  </div>
+  <div class="dye-input-card" id="dye-scan-panel" style="display:none;">
+    <label data-i18n="dyeScanTab">סריקת רכיבים</label>
+    <textarea id="dye-scan-input" dir="ltr" placeholder="Paste ingredient list from packaging..." data-i18n-placeholder="dyeScanPlaceholder"></textarea>
+    <button class="submit-btn" id="dye-scan-btn" onclick="checkDye('scan')" disabled data-i18n="dyeSubmitScan" style="background:linear-gradient(135deg,#FF6B35,#E53935);">סרוק רכיבים</button>
+  </div>
+  <div class="dye-links">
+    <button onclick="loadDyeExample()" data-i18n="dyeTryExample">נסו דוגמה</button>
+    <button onclick="showScreen('landing-screen')" data-i18n="back">חזרה</button>
+  </div>
+  <div id="dye-error" style="display:none;margin-top:16px;padding:14px;background:var(--concern-bg);border:1px solid var(--concern-border);border-radius:var(--radius-sm);color:var(--concern);font-size:14px;text-align:center;"></div>
+</div>
+
+<!-- ===== FOOD DYE LOADING SCREEN ===== -->
+<div id="dye-loading-screen" class="screen" style="align-items:center;justify-content:center;background:var(--surface);">
+  <div class="loading-content">
+    <div class="loading-icon">
+      <div class="loading-spinner" style="border-top-color:#E53935;"></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#E53935" stroke-width="2" stroke-linecap="round" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;">
+        <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2"/>
+      </svg>
+    </div>
+    <div class="pulse-dots"><span style="background:#E53935"></span><span style="background:#E53935"></span><span style="background:#E53935"></span></div>
+    <p class="loading-text" data-i18n="dyeLoading">בודק צבע מאכל...</p>
+    <p class="loading-sub" data-i18n="dyeLoadingSub">מאמת מול מאגר FDA, EU ו-MOH</p>
+  </div>
+</div>
+
+<!-- ===== FOOD DYE RESULTS SCREEN ===== -->
+<div id="dye-results-screen" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('dye-screen')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span data-i18n="back">חזרה</span>
+    </button>
+    <div class="logo">Healthy<span class="accent">Scan</span></div>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="lang-toggle-dye-results">EN</button>
+  </div>
+  <div class="results-container" id="dye-results-container"></div>
+  <div class="powered-by">Powered by <strong>HealthyScan</strong> + FDA / EU / MOH</div>
+</div>
+
+<div id="iherb-screen" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('landing-screen')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span data-i18n="back">חזרה</span>
+    </button>
+    <div class="logo">Healthy<span class="accent">Scan</span></div>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="lang-toggle-iherb">EN</button>
+  </div>
+  <div class="iherb-header">
+    <div class="iherb-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:14px;height:14px"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      iHerb Safety Check
+    </div>
+    <h2 data-i18n="iherbTitle">בודק תוספי iHerb</h2>
+    <p data-i18n="iherbSubtitle">הדביקו קישור למוצר מ-iHerb ונבדוק אותו בשבילכם</p>
+  </div>
+  <div class="iherb-input-card">
+    <label>iHerb URL</label>
+    <input type="url" id="iherb-url-input" dir="ltr" placeholder="https://il.iherb.com/pr/..." data-i18n-placeholder="iherbPlaceholder">
+    <button class="submit-btn" id="iherb-submit-btn" onclick="checkIHerb()" disabled data-i18n="iherbSubmit" style="background:linear-gradient(135deg,#4CAF50,#388E3C);">בדוק תוסף</button>
+  </div>
+  <div class="iherb-links">
+    <button onclick="loadIHerbExample()" data-i18n="iherbTryExample">נסו דוגמה</button>
+    <button onclick="showScreen('landing-screen')" data-i18n="back">חזרה</button>
+  </div>
+  <div id="iherb-error" style="display:none;margin-top:16px;padding:14px;background:var(--concern-bg);border:1px solid var(--concern-border);border-radius:var(--radius-sm);color:var(--concern);font-size:14px;text-align:center;"></div>
+</div>
+
+<!-- ===== iHerb LOADING SCREEN ===== -->
+<div id="iherb-loading-screen" class="screen" style="align-items:center;justify-content:center;background:var(--surface);">
+  <div class="loading-content">
+    <div class="loading-icon">
+      <div class="loading-spinner" style="border-top-color:#4CAF50;"></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;">
+        <path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/>
+      </svg>
+    </div>
+    <div class="pulse-dots"><span style="background:#4CAF50"></span><span style="background:#4CAF50"></span><span style="background:#4CAF50"></span></div>
+    <p class="loading-text" data-i18n="iherbLoading">בודק תוסף...</p>
+    <p class="loading-sub" data-i18n="iherbLoadingSub">מאמת מול מאגר תרופות ורגולציה</p>
+  </div>
+</div>
+
+<!-- ===== iHerb RESULTS SCREEN ===== -->
+<div id="iherb-results-screen" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('iherb-screen')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span data-i18n="back">חזרה</span>
+    </button>
+    <div class="logo">Healthy<span class="accent">Scan</span></div>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="lang-toggle-iherb-results">EN</button>
+  </div>
+  <div class="results-container" id="iherb-results-container"></div>
+  <div class="powered-by">Powered by <strong>HealthyScan</strong> + MOH Drug Registry</div>
+</div>
+
+<!-- ===== LOADING SCREEN ===== -->
+<div id="loading-screen" class="screen">
+  <div class="loading-content">
+    <div class="loading-icon">
+      <div class="loading-spinner"></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    <div class="pulse-dots"><span></span><span></span><span></span></div>
+    <p class="loading-text" data-i18n="loadingText">מנתח רכיבים...</p>
+    <p class="loading-sub" data-i18n="loadingSub">בודק מול מאגר נתונים</p>
+  </div>
+</div>
+
+<!-- ===== RESULTS SCREEN ===== -->
+<div id="results-screen" class="screen">
+  <div class="top-bar">
+    <button class="back-btn" onclick="showScreen('landing-screen')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span data-i18n="back">חזרה</span>
+    </button>
+    <div class="logo">Healthy<span class="accent">Scan</span></div>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="lang-toggle-results">EN</button>
+  </div>
+  <div class="results-container" id="results-container"></div>
+  <div class="powered-by">Powered by <strong>HealthyScan</strong></div>
+</div>
+
+<!-- ===== PWA INSTALL BANNER ===== -->
+<div class="install-banner" id="install-banner">
+  <div class="install-banner-text">
+    <strong data-i18n="installTitle">התקן את HealthyScan</strong>
+    <span data-i18n="installDesc">גישה מהירה מהמסך הראשי</span>
+  </div>
+  <button class="install-banner-btn" id="install-btn" onclick="installApp()" data-i18n="installBtn">התקן</button>
+  <button class="install-banner-close" onclick="dismissInstall()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<script>
+/* =====================================================================
+   HealthyScan — Food Ingredient Scanner
+   Single-file SPA  |  Hebrew-first RTL  |  PWA
+   Safe DOM construction — no innerHTML with user data
+   ===================================================================== */
+
+// ===== i18n =====
+const LANG = {
+  he: {
+    appTitle: 'HealthyScan',
+    tagline: 'כי מגיע לך לדעת מה אתה אוכל',
+    pillBarcode: 'סרוק ברקוד',
+    pillPhoto: 'צלם רכיבים',
+    pillPaste: 'הדבק רשימה',
+    ctaStart: 'התחל סריקה',
+    noteFree: 'חינם לשימוש',
+    noteNoSignup: 'ללא הרשמה',
+    recentScans: 'סריקות אחרונות',
+    cameraHint: 'כוון את הרכיבים למסגרת',
+    cameraHintBarcode: 'כוון את הברקוד למסגרת',
+    modeBarcode: 'ברקוד',
+    modeIngredients: 'רכיבים',
+    pasteInstead: 'הדבק במקום',
+    cameraErrorText: 'לא ניתן לגשת למצלמה. אנא אפשר גישה בהגדרות הדפדפן.',
+    cameraErrorBtn: 'הדבק רשימת רכיבים',
+    processingText: 'מנתח תמונה...',
+    back: 'חזרה',
+    pasteTitle: 'הדבק רכיבים',
+    pasteSubtitle: 'העתק את רשימת הרכיבים מהאריזה',
+    ingredientsLabel: 'רשימת רכיבים',
+    inputPlaceholder: 'הדבק כאן את רשימת הרכיבים...',
+    submitBtn: 'בדוק מוצר',
+    tryExample: 'נסו דוגמה',
+    useCamera: 'צלם במקום',
+    loadingText: 'מנתח רכיבים...',
+    loadingSub: 'בודק מול מאגר נתונים',
+    scanAgain: 'סרוק שוב',
+    newScan: 'סריקה חדשה',
+    shareResult: 'שתף תוצאה',
+    verdictSafe: 'בטוח לאכילה',
+    verdictCaution: 'כדאי לשים לב',
+    verdictConcern: 'שימו לב',
+    summarySafe: 'המוצר הזה נראה בסדר. רוב הרכיבים מוכרים ובטוחים.',
+    summaryCaution: 'יש כמה רכיבים שכדאי לשים לב אליהם.',
+    summaryConcern: 'מוצר זה מכיל רכיבים שדורשים תשומת לב.',
+    sectionFlagged: 'מסומנים',
+    sectionWorthKnowing: 'כדאי לדעת',
+    sectionAllClear: 'תקינים',
+    sectionUnknown: 'לא במאגר',
+    totalIngredients: 'רכיבים',
+    clearCount: 'תקין',
+    cautionCount: 'לתשומת לב',
+    concernCount: 'מסומנים',
+    detailSafety: 'רמת בטיחות',
+    detailADI: 'ADI (צריכה יומית)',
+    detailRegulation: 'מעמד רגולטורי',
+    detailSource: 'מקור',
+    detailWhyScore: 'למה הציון הזה?',
+    detailAllergen: 'אלרגן',
+    detailChildrenUnsafe: 'לא מומלץ לילדים',
+    detailPregnancyUnsafe: 'לא מומלץ בהריון',
+    detailBannedIn: 'אסור ב:',
+    detailHyperactivity: 'קשור להיפראקטיביות בילדים',
+    detailIARC: 'סיווג IARC',
+    detailFoundIn: 'נמצא ב:',
+    detailGenerallySafe: 'מוכר כבטוח, ללא חששות בריאותיים משמעותיים',
+    scoreLabel: 'ציון',
+    moreDetails: 'פרטים נוספים',
+    safeLevel: 'בטוח',
+    cautionLevel: 'לתשומת לב',
+    concernLevel: 'מסומן',
+    unknownLevel: 'לא ידוע',
+    installTitle: 'התקן את HealthyScan',
+    installDesc: 'גישה מהירה מהמסך הראשי',
+    installBtn: 'התקן',
+    noADI: 'לא צוין',
+    regulationPermitted: 'מותר בישראל',
+    regulationRestricted: 'מוגבל',
+    regulationBanned: 'אסור בישראל',
+    langToggle: 'EN',
+    justNow: 'הרגע',
+    minutesAgo: ' דקות',
+    hoursAgo: ' שעות',
+    barcodeSearching: 'מחפש מוצר...',
+    barcodeNotFound: 'ברקוד לא נמצא במאגר. הדבק את הרכיבים ידנית.',
+    barcodeFound: 'מוצר נמצא!',
+    scanningBarcode: 'סורק ברקוד...',
+    productInfoTitle: 'פרטי מוצר',
+    nutritionTitle: 'ערכים תזונתיים (ל-100 גר׳)',
+    allergensTitle: 'אלרגנים',
+    tracesTitle: 'עשוי להכיל',
+    nutriScore: 'ציון תזונתי',
+    novaGroup: 'רמת עיבוד',
+    novaLabels: ['', 'מזון טבעי', 'מרכיבי בישול', 'מזון מעובד', 'מזון אולטרה-מעובד'],
+    calories: 'קלוריות',
+    fat: 'שומן',
+    saturatedFat: 'שומן רווי',
+    carbs: 'פחמימות',
+    sugars: 'סוכרים',
+    sodium: 'נתרן',
+    protein: 'חלבון',
+    fiber: 'סיבים',
+    salt: 'מלח',
+    perHundredG: 'ל-100 גר׳',
+    foplWarning: 'תוויות אזהרה',
+    foplHighSugar: 'סוכר גבוה',
+    foplHighSodium: 'נתרן גבוה',
+    foplHighSatFat: 'שומן רווי גבוה',
+    sourceOFF: 'מקור: Open Food Facts',
+    sourceD1: 'מקור: מאגר מקומי',
+    scanAnother: 'סרוק מוצר נוסף',
+    // iHerb Checker
+    iherbTitle: 'בודק תוספי iHerb',
+    iherbSubtitle: 'הדביקו קישור למוצר מ-iHerb ונבדוק אותו בשבילכם',
+    iherbPlaceholder: 'https://il.iherb.com/pr/...',
+    iherbSubmit: 'בדוק תוסף',
+    iherbLoading: 'בודק תוסף...',
+    iherbLoadingSub: 'מאמת מול מאגר תרופות ורגולציה',
+    iherbPill: 'בדוק תוסף iHerb',
+    iherbSafe: 'בטוח לשימוש',
+    iherbCaution: 'שים לב',
+    iherbConcern: 'בעייתי',
+    iherbServingSize: 'מנה',
+    iherbDailyValue: 'ערך יומי',
+    iherbAmount: 'כמות',
+    iherbFlags: 'דגלים',
+    iherbPrescription: 'תרופת מרשם בישראל',
+    iherbExceedsUL: 'חורג מהמינון העליון',
+    iherbNearUL: 'קרוב למינון העליון',
+    iherbRegistered: 'רשום במאגר התרופות',
+    iherbOtherIngredients: 'רכיבים נוספים',
+    iherbWarnings: 'אזהרות היצרן',
+    iherbSuggestedUse: 'אופן שימוש מומלץ',
+    iherbTryExample: 'נסו דוגמה',
+    iherbExampleUrl: 'https://il.iherb.com/pr/now-foods-melatonin-3-mg-180-lozenges/710',
+    // Food Dye Checker
+    dyeTitle: 'בודק צבעי מאכל',
+    dyeSubtitle: 'בדקו אם צבע מאכל בטוח — חפשו שם או הדביקו רשימת רכיבים',
+    dyePill: 'בודק צבעי מאכל',
+    dyeSearchTab: 'חיפוש צבע',
+    dyeScanTab: 'סריקת רכיבים',
+    dyeSearchPlaceholder: 'Red 40, E129, Tartrazine...',
+    dyeScanPlaceholder: 'הדביקו רשימת רכיבים מהאריזה...',
+    dyeSubmitSearch: 'בדוק צבע',
+    dyeSubmitScan: 'סרוק רכיבים',
+    dyeLoading: 'בודק צבע מאכל...',
+    dyeLoadingSub: 'מאמת מול מאגר FDA, EU ו-MOH',
+    dyeSafe: 'צבע בטוח',
+    dyeCaution: 'יש לשים לב',
+    dyeConcern: 'בעייתי',
+    dyeNoDyes: 'לא נמצאו צבעי מאכל',
+    dyeNoDyesSub: 'לא זוהו צבעי מאכל ברשימת הרכיבים',
+    dyeBanned: 'אסור לשימוש',
+    dyePhaseOut: 'בהדרגה מוצא משימוש',
+    dyeEuWarning: 'דורש תווית אזהרה באירופה',
+    dyeSynthetic: 'סינתטי',
+    dyeNatural: 'טבעי',
+    dyeFdaStatus: 'סטטוס FDA',
+    dyeEuStatus: 'סטטוס EU',
+    dyeHealthConcerns: 'חששות בריאותיים',
+    dyeTryExample: 'נסו דוגמה',
+    dyeClean: 'נקי מצבעים מלאכותיים!',
+    dyeCleanSub: 'לא נמצאו צבעי מאכל סינתטיים ברשימת הרכיבים',
+    dyeFoundIn: 'נמצא ברשימה כ:',
+  },
+  en: {
+    appTitle: 'HealthyScan',
+    tagline: 'Because you deserve to know what you\'re eating',
+    pillBarcode: 'Scan Barcode',
+    pillPhoto: 'Photo Ingredients',
+    pillPaste: 'Paste List',
+    ctaStart: 'Start Scanning',
+    noteFree: 'Free to use',
+    noteNoSignup: 'No signup required',
+    recentScans: 'Recent Scans',
+    cameraHint: 'Align ingredients in frame',
+    cameraHintBarcode: 'Align barcode in frame',
+    modeBarcode: 'Barcode',
+    modeIngredients: 'Ingredients',
+    pasteInstead: 'Paste Instead',
+    cameraErrorText: 'Cannot access camera. Please allow access in browser settings.',
+    cameraErrorBtn: 'Paste Ingredients List',
+    processingText: 'Analyzing image...',
+    back: 'Back',
+    pasteTitle: 'Paste Ingredients',
+    pasteSubtitle: 'Copy the ingredients list from the packaging',
+    ingredientsLabel: 'Ingredients List',
+    inputPlaceholder: 'Paste your ingredients list here...',
+    submitBtn: 'Check Product',
+    tryExample: 'Try Example',
+    useCamera: 'Use Camera',
+    loadingText: 'Analyzing ingredients...',
+    loadingSub: 'Checking against database',
+    scanAgain: 'Scan Again',
+    newScan: 'New Scan',
+    shareResult: 'Share Result',
+    verdictSafe: 'Safe to Eat',
+    verdictCaution: 'Worth Noting',
+    verdictConcern: 'Pay Attention',
+    summarySafe: 'This product looks good. Most ingredients are recognized and safe.',
+    summaryCaution: 'Some ingredients worth paying attention to.',
+    summaryConcern: 'This product contains ingredients that need attention.',
+    sectionFlagged: 'Flagged',
+    sectionWorthKnowing: 'Worth Knowing',
+    sectionAllClear: 'All Clear',
+    sectionUnknown: 'Not in Database',
+    totalIngredients: 'ingredients',
+    clearCount: 'clear',
+    cautionCount: 'caution',
+    concernCount: 'flagged',
+    detailSafety: 'Safety Level',
+    detailADI: 'ADI (Daily Intake)',
+    detailRegulation: 'Regulatory Status',
+    detailSource: 'Source',
+    detailWhyScore: 'Why this score?',
+    detailAllergen: 'Allergen',
+    detailChildrenUnsafe: 'Not recommended for children',
+    detailPregnancyUnsafe: 'Not recommended during pregnancy',
+    detailBannedIn: 'Banned in:',
+    detailHyperactivity: 'Linked to hyperactivity in children',
+    detailIARC: 'IARC Classification',
+    detailFoundIn: 'Found in:',
+    detailGenerallySafe: 'Generally recognized as safe with no significant health concerns',
+    scoreLabel: 'score',
+    moreDetails: 'More details',
+    safeLevel: 'Safe',
+    cautionLevel: 'Caution',
+    concernLevel: 'Flagged',
+    unknownLevel: 'Unknown',
+    installTitle: 'Install HealthyScan',
+    installDesc: 'Quick access from home screen',
+    installBtn: 'Install',
+    noADI: 'Not specified',
+    regulationPermitted: 'Permitted in Israel',
+    regulationRestricted: 'Restricted',
+    regulationBanned: 'Banned in Israel',
+    langToggle: '\u05E2\u05D1',
+    justNow: 'Just now',
+    minutesAgo: 'm ago',
+    hoursAgo: 'h ago',
+    barcodeSearching: 'Looking up product...',
+    barcodeNotFound: 'Barcode not found. Please paste ingredients manually.',
+    barcodeFound: 'Product found!',
+    scanningBarcode: 'Scanning barcode...',
+    productInfoTitle: 'Product Info',
+    nutritionTitle: 'Nutrition Facts (per 100g)',
+    allergensTitle: 'Allergens',
+    tracesTitle: 'May Contain',
+    nutriScore: 'Nutri-Score',
+    novaGroup: 'Processing Level',
+    novaLabels: ['', 'Unprocessed', 'Culinary Ingredients', 'Processed', 'Ultra-Processed'],
+    calories: 'Calories',
+    fat: 'Fat',
+    saturatedFat: 'Saturated Fat',
+    carbs: 'Carbohydrates',
+    sugars: 'Sugars',
+    sodium: 'Sodium',
+    protein: 'Protein',
+    fiber: 'Fiber',
+    salt: 'Salt',
+    perHundredG: 'per 100g',
+    foplWarning: 'Warning Labels',
+    foplHighSugar: 'High Sugar',
+    foplHighSodium: 'High Sodium',
+    foplHighSatFat: 'High Saturated Fat',
+    sourceOFF: 'Source: Open Food Facts',
+    sourceD1: 'Source: Local Database',
+    scanAnother: 'Scan Another Product',
+    // iHerb Checker
+    iherbTitle: 'iHerb Supplement Checker',
+    iherbSubtitle: 'Paste an iHerb product link and we\'ll check it for you',
+    iherbPlaceholder: 'https://il.iherb.com/pr/...',
+    iherbSubmit: 'Check Supplement',
+    iherbLoading: 'Checking supplement...',
+    iherbLoadingSub: 'Verifying against drug registry & regulations',
+    iherbPill: 'Check iHerb Supplement',
+    iherbSafe: 'Safe to Use',
+    iherbCaution: 'Caution',
+    iherbConcern: 'Concern',
+    iherbServingSize: 'Serving Size',
+    iherbDailyValue: 'Daily Value',
+    iherbAmount: 'Amount',
+    iherbFlags: 'Flags',
+    iherbPrescription: 'Prescription drug in Israel',
+    iherbExceedsUL: 'Exceeds Upper Limit',
+    iherbNearUL: 'Near Upper Limit',
+    iherbRegistered: 'Registered in drug database',
+    iherbOtherIngredients: 'Other Ingredients',
+    iherbWarnings: 'Manufacturer Warnings',
+    iherbSuggestedUse: 'Suggested Use',
+    iherbTryExample: 'Try Example',
+    iherbExampleUrl: 'https://il.iherb.com/pr/now-foods-melatonin-3-mg-180-lozenges/710',
+    // Food Dye Checker
+    dyeTitle: 'Food Dye Checker',
+    dyeSubtitle: 'Check if a food dye is safe — search by name or paste an ingredient list',
+    dyePill: 'Food Dye Checker',
+    dyeSearchTab: 'Search Dye',
+    dyeScanTab: 'Scan Ingredients',
+    dyeSearchPlaceholder: 'Red 40, E129, Tartrazine...',
+    dyeScanPlaceholder: 'Paste ingredient list from packaging...',
+    dyeSubmitSearch: 'Check Dye',
+    dyeSubmitScan: 'Scan Ingredients',
+    dyeLoading: 'Checking food dye...',
+    dyeLoadingSub: 'Verifying against FDA, EU & MOH databases',
+    dyeSafe: 'Safe Colorant',
+    dyeCaution: 'Use With Caution',
+    dyeConcern: 'Concern',
+    dyeNoDyes: 'No Food Dyes Found',
+    dyeNoDyesSub: 'No food dyes detected in the ingredient list',
+    dyeBanned: 'Banned',
+    dyePhaseOut: 'Being Phased Out',
+    dyeEuWarning: 'EU Warning Label Required',
+    dyeSynthetic: 'Synthetic',
+    dyeNatural: 'Natural',
+    dyeFdaStatus: 'FDA Status',
+    dyeEuStatus: 'EU Status',
+    dyeHealthConcerns: 'Health Concerns',
+    dyeTryExample: 'Try Example',
+    dyeClean: 'Clean — No Artificial Dyes!',
+    dyeCleanSub: 'No synthetic food dyes detected in the ingredient list',
+    dyeFoundIn: 'Found as:',
+  },
+  ru: {
+    appTitle: 'HealthyScan',
+    tagline: 'Потому что вы заслуживаете знать, что вы едите',
+    pillBarcode: 'Сканировать штрихкод',
+    pillPhoto: 'Сфотографировать состав',
+    pillPaste: 'Вставить список',
+    ctaStart: 'Начать сканирование',
+    noteFree: 'Бесплатно',
+    noteNoSignup: 'Без регистрации',
+    recentScans: 'Последние сканирования',
+    cameraHint: 'Наведите камеру на состав',
+    cameraHintBarcode: 'Наведите камеру на штрихкод',
+    modeBarcode: 'Штрихкод',
+    modeIngredients: 'Состав',
+    pasteInstead: 'Вставить вручную',
+    cameraErrorText: 'Нет доступа к камере. Разрешите доступ в настройках браузера.',
+    cameraErrorBtn: 'Вставить список ингредиентов',
+    processingText: 'Анализируем изображение...',
+    back: 'Назад',
+    pasteTitle: 'Вставьте состав',
+    pasteSubtitle: 'Скопируйте список ингредиентов с упаковки',
+    ingredientsLabel: 'Список ингредиентов',
+    inputPlaceholder: 'Вставьте список ингредиентов сюда...',
+    submitBtn: 'Проверить продукт',
+    tryExample: 'Попробовать пример',
+    useCamera: 'Использовать камеру',
+    loadingText: 'Анализируем состав...',
+    loadingSub: 'Проверяем по базе данных',
+    scanAgain: 'Сканировать ещё',
+    newScan: 'Новое сканирование',
+    shareResult: 'Поделиться',
+    verdictSafe: 'Безопасно',
+    verdictCaution: 'Стоит обратить внимание',
+    verdictConcern: 'Будьте внимательны',
+    summarySafe: 'Этот продукт выглядит хорошо. Большинство ингредиентов известны и безопасны.',
+    summaryCaution: 'Некоторые ингредиенты стоит принять к сведению.',
+    summaryConcern: 'Этот продукт содержит ингредиенты, требующие внимания.',
+    sectionFlagged: 'Отмечены',
+    sectionWorthKnowing: 'Стоит знать',
+    sectionAllClear: 'В норме',
+    sectionUnknown: 'Нет в базе',
+    totalIngredients: 'ингредиентов',
+    clearCount: 'в норме',
+    cautionCount: 'внимание',
+    concernCount: 'отмечены',
+    detailSafety: 'Уровень безопасности',
+    detailADI: 'ДСП (допустимое суточное потребление)',
+    detailRegulation: 'Регуляторный статус',
+    detailSource: 'Источник',
+    detailWhyScore: 'Почему такая оценка?',
+    detailAllergen: 'Аллерген',
+    detailChildrenUnsafe: 'Не рекомендуется для детей',
+    detailPregnancyUnsafe: 'Не рекомендуется при беременности',
+    detailBannedIn: 'Запрещён в:',
+    detailHyperactivity: 'Связан с гиперактивностью у детей',
+    detailIARC: 'Классификация МАИР',
+    detailFoundIn: 'Встречается в:',
+    detailGenerallySafe: 'Общепризнан безопасным, без значительных рисков для здоровья',
+    scoreLabel: 'оценка',
+    moreDetails: 'Подробнее',
+    safeLevel: 'Безопасно',
+    cautionLevel: 'Внимание',
+    concernLevel: 'Отмечен',
+    unknownLevel: 'Неизвестно',
+    installTitle: 'Установить HealthyScan',
+    installDesc: 'Быстрый доступ с главного экрана',
+    installBtn: 'Установить',
+    noADI: 'Не указано',
+    regulationPermitted: 'Разрешён в Израиле',
+    regulationRestricted: 'Ограничен',
+    regulationBanned: 'Запрещён в Израиле',
+    langToggle: 'עב',
+    justNow: 'Только что',
+    minutesAgo: ' мин. назад',
+    hoursAgo: ' ч. назад',
+    barcodeSearching: 'Ищем продукт...',
+    barcodeNotFound: 'Штрихкод не найден в базе. Вставьте состав вручную.',
+    barcodeFound: 'Продукт найден!',
+    scanningBarcode: 'Сканируем штрихкод...',
+    productInfoTitle: 'Информация о продукте',
+    nutritionTitle: 'Пищевая ценность (на 100 г)',
+    allergensTitle: 'Аллергены',
+    tracesTitle: 'Может содержать',
+    nutriScore: 'Nutri-Score',
+    novaGroup: 'Степень обработки',
+    novaLabels: ['', 'Натуральный', 'Кулинарные ингредиенты', 'Обработанный', 'Ультра-обработанный'],
+    calories: 'Калории',
+    fat: 'Жиры',
+    saturatedFat: 'Насыщенные жиры',
+    carbs: 'Углеводы',
+    sugars: 'Сахар',
+    sodium: 'Натрий',
+    protein: 'Белок',
+    fiber: 'Клетчатка',
+    salt: 'Соль',
+    perHundredG: 'на 100 г',
+    foplWarning: 'Предупреждения',
+    foplHighSugar: 'Высокое содержание сахара',
+    foplHighSodium: 'Высокое содержание натрия',
+    foplHighSatFat: 'Высокое содержание насыщенных жиров',
+    sourceOFF: 'Источник: Open Food Facts',
+    sourceD1: 'Источник: Локальная база данных',
+    scanAnother: 'Сканировать ещё',
+    // iHerb Checker
+    iherbTitle: 'Проверка добавок iHerb',
+    iherbSubtitle: 'Вставьте ссылку на продукт iHerb — мы проверим его',
+    iherbPlaceholder: 'https://il.iherb.com/pr/...',
+    iherbSubmit: 'Проверить добавку',
+    iherbLoading: 'Проверяем добавку...',
+    iherbLoadingSub: 'Сверяем с реестром лекарств и нормативами',
+    iherbPill: 'Проверить добавку iHerb',
+    iherbSafe: 'Безопасно',
+    iherbCaution: 'Внимание',
+    iherbConcern: 'Проблемно',
+    iherbServingSize: 'Порция',
+    iherbDailyValue: 'Суточная норма',
+    iherbAmount: 'Количество',
+    iherbFlags: 'Отметки',
+    iherbPrescription: 'Рецептурный препарат в Израиле',
+    iherbExceedsUL: 'Превышает верхний предел',
+    iherbNearUL: 'Близко к верхнему пределу',
+    iherbRegistered: 'Зарегистрирован в реестре лекарств',
+    iherbOtherIngredients: 'Другие ингредиенты',
+    iherbWarnings: 'Предупреждения производителя',
+    iherbSuggestedUse: 'Рекомендации по применению',
+    iherbTryExample: 'Попробовать пример',
+    iherbExampleUrl: 'https://il.iherb.com/pr/now-foods-melatonin-3-mg-180-lozenges/710',
+    // Food Dye Checker
+    dyeTitle: 'Проверка пищевых красителей',
+    dyeSubtitle: 'Проверьте безопасность красителя — поиск по названию или вставьте список ингредиентов',
+    dyePill: 'Проверка красителей',
+    dyeSearchTab: 'Поиск красителя',
+    dyeScanTab: 'Сканировать состав',
+    dyeSearchPlaceholder: 'Red 40, E129, Tartrazine...',
+    dyeScanPlaceholder: 'Вставьте список ингредиентов с упаковки...',
+    dyeSubmitSearch: 'Проверить краситель',
+    dyeSubmitScan: 'Сканировать состав',
+    dyeLoading: 'Проверяем краситель...',
+    dyeLoadingSub: 'Сверяем с базами FDA, EU и MOH',
+    dyeSafe: 'Безопасный краситель',
+    dyeCaution: 'С осторожностью',
+    dyeConcern: 'Проблемный',
+    dyeNoDyes: 'Красители не найдены',
+    dyeNoDyesSub: 'В списке ингредиентов пищевые красители не обнаружены',
+    dyeBanned: 'Запрещён',
+    dyePhaseOut: 'Выводится из использования',
+    dyeEuWarning: 'Требуется маркировка в ЕС',
+    dyeSynthetic: 'Синтетический',
+    dyeNatural: 'Натуральный',
+    dyeFdaStatus: 'Статус FDA',
+    dyeEuStatus: 'Статус EU',
+    dyeHealthConcerns: 'Риски для здоровья',
+    dyeTryExample: 'Попробовать пример',
+    dyeClean: 'Чисто — без искусственных красителей!',
+    dyeCleanSub: 'Синтетические красители не обнаружены в составе',
+    dyeFoundIn: 'Найден как:',
+  }
+};
+
+// Detect language from URL param (?lang=ru), then localStorage, then default Hebrew
+var urlLangParam = new URLSearchParams(window.location.search).get('lang');
+if (urlLangParam && LANG[urlLangParam]) {
+  localStorage.setItem('hs-lang', urlLangParam);
+}
+let currentLang = localStorage.getItem('hs-lang') || 'he';
+let currentScreen = 'landing-screen';
+let cameraStream = null;
+let scanMode = 'barcode';
+let deferredPrompt = null;
+let lastResults = null;
+let lastBarcodeData = null; // Enriched barcode data from OFF API
+
+// ===== SVG HELPER (safe, no innerHTML with user data) =====
+function createSVG(paths, size, strokeW) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor');
+  svg.setAttribute('stroke-width', String(strokeW || 2));
+  svg.setAttribute('stroke-linecap', 'round');
+  svg.setAttribute('stroke-linejoin', 'round');
+  if (size) { svg.setAttribute('width', String(size)); svg.setAttribute('height', String(size)); }
+  for (const d of paths) {
+    const p = document.createElementNS(ns, 'path');
+    p.setAttribute('d', d);
+    svg.appendChild(p);
+  }
+  return svg;
+}
+
+// ===== SCREEN STATE MACHINE =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  var target = document.getElementById(id);
+  if (target) { target.classList.add('active'); target.offsetHeight; currentScreen = id; }
+  if (id === 'camera-screen') startCamera();
+  if (id === 'landing-screen') { stopCamera(); renderHistory(); }
+}
+
+// ===== LANGUAGE =====
+function toggleLanguage() {
+  var langs = Object.keys(LANG);
+  var idx = langs.indexOf(currentLang);
+  currentLang = langs[(idx + 1) % langs.length];
+  localStorage.setItem('hs-lang', currentLang);
+  applyLanguage();
+}
+
+function applyLanguage() {
+  var strings = LANG[currentLang];
+  var isRTL = currentLang === 'he';
+  document.documentElement.lang = currentLang;
+  document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+  document.body.style.direction = isRTL ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n');
+    if (strings[key]) el.textContent = strings[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+    var key = el.getAttribute('data-i18n-placeholder');
+    if (strings[key]) el.placeholder = strings[key];
+  });
+  // Show next language label on toggle button
+  var langs = Object.keys(LANG);
+  var nextIdx = (langs.indexOf(currentLang) + 1) % langs.length;
+  var nextLangLabels = { he: 'עב', en: 'EN', ru: 'РУ' };
+  var toggleLabel = nextLangLabels[langs[nextIdx]] || langs[nextIdx].toUpperCase();
+  document.querySelectorAll('.lang-toggle').forEach(function(btn) { btn.textContent = toggleLabel; });
+  document.querySelectorAll('.back-btn svg').forEach(function(svg) { svg.style.transform = isRTL ? 'scaleX(-1)' : 'none'; });
+  // Update page title per language
+  var titles = { he: 'HealthyScan — סורק מזון', en: 'HealthyScan — Food Scanner', ru: 'HealthyScan — Сканер продуктов' };
+  document.title = titles[currentLang] || titles.en;
+  if (currentScreen === 'results-screen' && lastResults) renderResults(lastResults);
+}
+
+// ===== PARSING =====
+function parseIngredients(text) {
+  if (!text || !text.trim()) return [];
+  // Pre-clean: strip disclaimers and notes
+  var cleaned = text
+    .replace(/\.?\s*לא מכיל[^,;\n]*/g, '')       // Hebrew "does not contain..."
+    .replace(/\.?\s*עלול להכיל[^,;\n]*/g, '')     // Hebrew "may contain..."
+    .replace(/\.?\s*may contain[^,;\n]*/gi, '')    // English "may contain..."
+    .replace(/\d+\.\s*/g, ',');                    // Numbered lists → commas
+  // Split on commas/semicolons/newlines but NOT inside parentheses/brackets
+  var result = [];
+  var current = '';
+  var depth = 0;
+  for (var i = 0; i < cleaned.length; i++) {
+    var ch = cleaned.charAt(i);
+    if (ch === '(' || ch === '[') { depth++; current += ch; }
+    else if (ch === ')' || ch === ']') { depth = Math.max(0, depth - 1); current += ch; }
+    else if ((ch === ',' || ch === ';' || ch === '\n') && depth === 0) {
+      var trimmed = current.trim();
+      if (trimmed.length > 0 && trimmed.length < 200) result.push(trimmed);
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  var last = current.trim();
+  if (last.length > 0 && last.length < 200) result.push(last);
+  // Clean up: fix stray commas/spaces inside parentheses from OCR artifacts
+  return result.map(function(s) { return s.replace(/\(\s*,\s*/g, '(').replace(/\s*,\s*\)/g, ')'); });
+}
+
+function extractENumber(name) {
+  var match = name.match(/E\s?(\d{3,4}[a-z]?)/i);
+  return match ? 'E' + match[1].toUpperCase() : null;
+}
+
+// ===== EXAMPLE =====
+var EXAMPLE_INGREDIENTS = 'Water, Sugar, Glucose Syrup, Citric Acid (E330), Sodium Benzoate (E211), Potassium Sorbate (E202), Ascorbic Acid (E300), Natural Flavors, Yellow 5 (E102), Red 40 (E129)';
+
+function loadExample() {
+  var input = document.getElementById('ingredients-input');
+  input.value = EXAMPLE_INGREDIENTS;
+  input.dispatchEvent(new Event('input'));
+}
+
+// ===== MOCK DB =====
+var MOCK_DB = {
+  'water': { level: 'green', score: 100, function_he: 'בסיס המוצר', function_en: 'Product base', adi: null, regulation: 'permitted', e_number: null },
+  'sugar': { level: 'yellow', score: 55, function_he: 'ממתיק — צריכה גבוהה קשורה להשמנה וסוכרת', function_en: 'Sweetener — high consumption linked to obesity and diabetes', adi: null, regulation: 'permitted', e_number: null },
+  'glucose syrup': { level: 'yellow', score: 50, function_he: 'ממתיק ומייצב — אינדקס גליקמי גבוה', function_en: 'Sweetener and stabilizer — high glycemic index', adi: null, regulation: 'permitted', e_number: null },
+  'citric acid': { level: 'green', score: 90, function_he: 'מחמצן — נמצא באופן טבעי בפירות הדר', function_en: 'Acidifier — naturally found in citrus fruits', adi: 'Not limited', regulation: 'permitted', e_number: 'E330' },
+  'e330': { level: 'green', score: 90, function_he: 'חומצת לימון — מחמצן טבעי', function_en: 'Citric Acid — natural acidifier', adi: 'Not limited', regulation: 'permitted', e_number: 'E330' },
+  'sodium benzoate': { level: 'yellow', score: 45, function_he: 'משמר — בשילוב עם ויטמין C עלול ליצור בנזן', function_en: 'Preservative — may form benzene when combined with Vitamin C', adi: '5 mg/kg', regulation: 'permitted', e_number: 'E211' },
+  'e211': { level: 'yellow', score: 45, function_he: 'נתרן בנזואט — משמר, עלול ליצור בנזן עם ויטמין C', function_en: 'Sodium Benzoate — preservative, may form benzene with Vitamin C', adi: '5 mg/kg', regulation: 'permitted', e_number: 'E211' },
+  'potassium sorbate': { level: 'green', score: 80, function_he: 'משמר — נחשב בטוח יחסית', function_en: 'Preservative — considered relatively safe', adi: '25 mg/kg', regulation: 'permitted', e_number: 'E202' },
+  'e202': { level: 'green', score: 80, function_he: 'אשלגן סורבט — משמר בטוח', function_en: 'Potassium Sorbate — safe preservative', adi: '25 mg/kg', regulation: 'permitted', e_number: 'E202' },
+  'ascorbic acid': { level: 'green', score: 95, function_he: 'ויטמין C — נוגד חמצון', function_en: 'Vitamin C — antioxidant', adi: 'Not limited', regulation: 'permitted', e_number: 'E300' },
+  'e300': { level: 'green', score: 95, function_he: 'חומצה אסקורבית (ויטמין C) — נוגד חמצון', function_en: 'Ascorbic Acid (Vitamin C) — antioxidant', adi: 'Not limited', regulation: 'permitted', e_number: 'E300' },
+  'natural flavors': { level: 'green', score: 75, function_he: 'תוספי טעם מתמציות טבעיות', function_en: 'Flavor additives from natural extracts', adi: null, regulation: 'permitted', e_number: null },
+  'yellow 5': { level: 'red', score: 20, function_he: 'טרטרזין — צבע מלאכותי מקבוצת סאות\'המפטון, קשור להיפראקטיביות בילדים', function_en: 'Tartrazine — artificial color, Southampton Six, linked to hyperactivity in children', adi: '7.5 mg/kg', regulation: 'restricted', e_number: 'E102' },
+  'e102': { level: 'red', score: 20, function_he: 'טרטרזין — צבע מלאכותי, קשור להיפראקטיביות', function_en: 'Tartrazine — artificial color linked to hyperactivity', adi: '7.5 mg/kg', regulation: 'restricted', e_number: 'E102' },
+  'red 40': { level: 'red', score: 15, function_he: 'אלורה רד — צבע מלאכותי, אסור במספר מדינות', function_en: 'Allura Red — artificial color, banned in several countries', adi: '7 mg/kg', regulation: 'restricted', e_number: 'E129' },
+  'e129': { level: 'red', score: 15, function_he: 'אלורה רד — צבע מלאכותי, אסור במספר מדינות', function_en: 'Allura Red — artificial color, banned in several countries', adi: '7 mg/kg', regulation: 'restricted', e_number: 'E129' },
+};
+
+function lookupIngredient(rawName) {
+  var name = rawName.trim();
+  var lower = name.toLowerCase();
+  var eNum = extractENumber(name);
+  if (MOCK_DB[lower]) return Object.assign({}, MOCK_DB[lower], { name: rawName });
+  if (eNum && MOCK_DB[eNum.toLowerCase()]) return Object.assign({}, MOCK_DB[eNum.toLowerCase()], { name: rawName });
+  var baseName = name.replace(/\s*\(E\d{3,4}[a-z]?\)/i, '').trim().toLowerCase();
+  if (MOCK_DB[baseName]) {
+    var result = Object.assign({}, MOCK_DB[baseName], { name: rawName });
+    if (eNum) result.e_number = eNum;
+    return result;
+  }
+  return { name: rawName, level: 'gray', score: null, function_he: 'רכיב לא נמצא במאגר הנתונים', function_en: 'Ingredient not found in database', adi: null, regulation: null, e_number: eNum };
+}
+
+function mockAnalyze(ingredientList) { return ingredientList.map(lookupIngredient); }
+
+// ===== SCORE =====
+function calculateOverallScore(results) {
+  var scored = results.filter(function(r) { return r.score !== null; });
+  if (scored.length === 0) return 50;
+  var total = 0, weight = 0;
+  for (var i = 0; i < scored.length; i++) {
+    var w = scored[i].level === 'red' ? 3 : scored[i].level === 'yellow' ? 2 : 1;
+    total += scored[i].score * w;
+    weight += w;
+  }
+  return Math.round(total / weight);
+}
+
+function getScoreLevel(score) {
+  if (score >= 70) return 'green';
+  if (score >= 40) return 'yellow';
+  return 'red';
+}
+
+// ===== ANALYSIS FLOW =====
+function analyzeIngredients() {
+  var input = document.getElementById('ingredients-input');
+  var text = input.value.trim();
+  if (!text) return;
+  // Cache barcode if user pasted ingredients after a barcode miss
+  if (pendingBarcodeForCache) {
+    cacheBarcode(pendingBarcodeForCache, text);
+    pendingBarcodeForCache = null;
+  }
+  showScreen('loading-screen');
+  var parsed = parseIngredients(text);
+
+  // Try real API first, fall back to mock
+  fetch('/api/food-scan', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ingredients: parsed }),
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.error) throw new Error(data.error);
+    if (!data.results || data.results.length === 0) throw new Error('empty');
+    lastResults = data.results;
+    saveToHistory(text, data.results);
+    renderResults(data.results);
+    showScreen('results-screen');
+  })
+  .catch(function(err) {
+    var msg = err && err.message ? err.message : '';
+    if (msg.indexOf('limit') > -1 || msg.indexOf('Daily') > -1) {
+      showToast(currentLang === 'he' ? 'הגעת למגבלת הסריקות היומית. נסה שוב מחר!' : 'Daily scan limit reached. Try again tomorrow!');
+    } else {
+      showToast(currentLang === 'he' ? 'שגיאה בניתוח הרכיבים. נסה שוב.' : 'Error analyzing ingredients. Please try again.');
+    }
+    showScreen('paste-screen');
+  });
+}
+
+// ===== ANALYZE WITH PRE-PARSED INGREDIENTS (barcode structured data) =====
+function analyzeWithParsed(ingredientsList) {
+  // Cache barcode if user scanned ingredients after a barcode miss
+  if (pendingBarcodeForCache) {
+    cacheBarcode(pendingBarcodeForCache, ingredientsList.join(', '));
+    pendingBarcodeForCache = null;
+  }
+  showScreen('loading-screen');
+  var text = ingredientsList.join(', ');
+
+  fetch('/api/food-scan', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ingredients: ingredientsList }),
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.error) throw new Error(data.error);
+    if (!data.results || data.results.length === 0) throw new Error('empty');
+    lastResults = data.results;
+    saveToHistory(text, data.results);
+    renderResults(data.results);
+    showScreen('results-screen');
+  })
+  .catch(function(err) {
+    var msg = err && err.message ? err.message : '';
+    if (msg.indexOf('limit') > -1 || msg.indexOf('Daily') > -1) {
+      showToast(currentLang === 'he' ? 'הגעת למגבלת הסריקות היומית. נסה שוב מחר!' : 'Daily scan limit reached. Try again tomorrow!');
+    } else {
+      showToast(currentLang === 'he' ? 'שגיאה בניתוח הרכיבים. נסה שוב.' : 'Error analyzing ingredients. Please try again.');
+    }
+    showScreen('paste-screen');
+  });
+}
+
+// ===== RENDER RESULTS (safe DOM construction) =====
+function renderResults(results) {
+  var t = LANG[currentLang];
+  var container = document.getElementById('results-container');
+  while (container.firstChild) container.removeChild(container.firstChild);
+
+  var score = calculateOverallScore(results);
+  var level = getScoreLevel(score);
+  var circumference = 2 * Math.PI * 54;
+  var offset = circumference * (1 - score / 100);
+
+  // Dedup: merge results that resolve to the same DB ingredient (same name_he + e_number)
+  var seen = {};
+  var deduped = [];
+  for (var i = 0; i < results.length; i++) {
+    var r = results[i];
+    var key = (r.name_he || r.name || '').toLowerCase() + '|' + (r.e_number || '');
+    if (r.level !== 'gray' && key && seen[key]) {
+      // Already shown — skip duplicate, but note the original input name
+      continue;
+    }
+    if (r.level !== 'gray' && key) seen[key] = true;
+    deduped.push(r);
+  }
+  var groups = { red: [], yellow: [], green: [], gray: [] };
+  for (var i = 0; i < deduped.length; i++) {
+    var grp = groups[deduped[i].level] || groups.gray;
+    grp.push(deduped[i]);
+  }
+
+  // Verdict card
+  var verdictCard = document.createElement('div');
+  verdictCard.className = 'verdict-card level-' + level + ' animate-up';
+
+  // Score ring (static SVG — safe)
+  var scoreWrap = document.createElement('div');
+  scoreWrap.className = 'score-ring-wrap';
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', '0 0 120 120');
+  var bgCircle = document.createElementNS(svgNS, 'circle');
+  bgCircle.setAttribute('class', 'score-ring-bg');
+  bgCircle.setAttribute('cx', '60'); bgCircle.setAttribute('cy', '60'); bgCircle.setAttribute('r', '54');
+  svg.appendChild(bgCircle);
+  var fillCircle = document.createElementNS(svgNS, 'circle');
+  fillCircle.setAttribute('class', 'score-ring-fill ' + level);
+  fillCircle.setAttribute('cx', '60'); fillCircle.setAttribute('cy', '60'); fillCircle.setAttribute('r', '54');
+  fillCircle.setAttribute('stroke-dasharray', String(circumference));
+  fillCircle.setAttribute('stroke-dashoffset', String(circumference));
+  svg.appendChild(fillCircle);
+  scoreWrap.appendChild(svg);
+
+  var scoreNum = document.createElement('div');
+  scoreNum.className = 'score-number';
+  scoreNum.textContent = '0';
+  scoreWrap.appendChild(scoreNum);
+
+  var scoreLbl = document.createElement('div');
+  scoreLbl.className = 'score-label';
+  scoreLbl.textContent = t.scoreLabel;
+  scoreWrap.appendChild(scoreLbl);
+  verdictCard.appendChild(scoreWrap);
+
+  // Verdict title
+  var verdictTitle = document.createElement('div');
+  verdictTitle.className = 'verdict-title ' + level;
+  verdictTitle.textContent = level === 'green' ? t.verdictSafe : level === 'yellow' ? t.verdictCaution : t.verdictConcern;
+  verdictCard.appendChild(verdictTitle);
+
+  var verdictSummary = document.createElement('div');
+  verdictSummary.className = 'verdict-summary';
+  verdictSummary.textContent = level === 'green' ? t.summarySafe : level === 'yellow' ? t.summaryCaution : t.summaryConcern;
+  verdictCard.appendChild(verdictSummary);
+
+  // Stats
+  var stats = document.createElement('div');
+  stats.className = 'verdict-stats';
+  var statItems = [
+    { num: deduped.length, label: t.totalIngredients, color: '' },
+    { num: groups.green.length, label: t.clearCount, color: 'green' },
+    { num: groups.yellow.length, label: t.cautionCount, color: 'yellow' },
+    { num: groups.red.length, label: t.concernCount, color: 'red' },
+  ];
+  for (var si = 0; si < statItems.length; si++) {
+    var stat = document.createElement('div');
+    stat.className = 'verdict-stat';
+    var num = document.createElement('div');
+    num.className = 'num' + (statItems[si].color ? ' ' + statItems[si].color : '');
+    num.textContent = String(statItems[si].num);
+    var lbl = document.createElement('div');
+    lbl.className = 'label';
+    lbl.textContent = statItems[si].label;
+    stat.appendChild(num);
+    stat.appendChild(lbl);
+    stats.appendChild(stat);
+  }
+  verdictCard.appendChild(stats);
+
+  // Action buttons
+  var actionRow = document.createElement('div');
+  actionRow.className = 'action-row';
+
+  var scanAgainBtn = document.createElement('button');
+  scanAgainBtn.className = 'action-btn filled';
+  scanAgainBtn.appendChild(createSVG(['M23 4v6h-6', 'M1 20v-6h6', 'M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'], 18, 2));
+  var scanAgainText = document.createElement('span');
+  scanAgainText.textContent = t.scanAgain;
+  scanAgainBtn.appendChild(scanAgainText);
+  scanAgainBtn.onclick = function() { lastBarcodeData = null; showScreen('paste-screen'); };
+
+  var shareBtn = document.createElement('button');
+  shareBtn.className = 'action-btn outline';
+  shareBtn.appendChild(createSVG(['M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98'], 18, 2));
+  var shareText = document.createElement('span');
+  shareText.textContent = t.shareResult;
+  shareBtn.appendChild(shareText);
+  shareBtn.onclick = shareResults;
+
+  var newScanBtn = document.createElement('button');
+  newScanBtn.className = 'action-btn outline';
+  newScanBtn.appendChild(createSVG(['M3 12a9 9 0 1 0 9-9', 'M3 3v6h6'], 18, 2));
+  var newScanText = document.createElement('span');
+  newScanText.textContent = t.newScan;
+  newScanBtn.appendChild(newScanText);
+  newScanBtn.onclick = function() { lastBarcodeData = null; showScreen('landing-screen'); };
+
+  actionRow.appendChild(scanAgainBtn);
+  actionRow.appendChild(shareBtn);
+  actionRow.appendChild(newScanBtn);
+  verdictCard.appendChild(actionRow);
+  container.appendChild(verdictCard);
+
+  // ── Enriched barcode data sections (nutrition, allergens, FOPL) ──
+  if (lastBarcodeData) {
+    var bd = lastBarcodeData;
+
+    // Product info header
+    if (bd.product_name || bd.product_name_he) {
+      var productCard = document.createElement('div');
+      productCard.className = 'product-info-card animate-in stagger-1';
+      var productInner = document.createElement('div');
+      productInner.className = 'product-info-inner';
+      if (bd.image_url) {
+        var img = document.createElement('img');
+        img.className = 'product-thumb';
+        img.src = bd.image_url;
+        img.alt = bd.product_name || '';
+        img.loading = 'lazy';
+        productInner.appendChild(img);
+      }
+      var productText = document.createElement('div');
+      productText.className = 'product-text';
+      var pName = document.createElement('div');
+      pName.className = 'product-name';
+      pName.textContent = currentLang === 'he'
+        ? (bd.product_name_he || bd.product_name)
+        : (bd.product_name || bd.product_name_he);
+      productText.appendChild(pName);
+      if (bd.brands) {
+        var pBrand = document.createElement('div');
+        pBrand.className = 'product-brand';
+        pBrand.textContent = bd.brands;
+        productText.appendChild(pBrand);
+      }
+      // NOVA + Nutri-Score badges inline
+      var badgeRow = document.createElement('div');
+      badgeRow.className = 'product-badge-row';
+      if (bd.nutri_score) {
+        var nsb = document.createElement('span');
+        nsb.className = 'nutri-badge grade-' + bd.nutri_score.toLowerCase();
+        nsb.textContent = 'Nutri-Score ' + bd.nutri_score.toUpperCase();
+        badgeRow.appendChild(nsb);
+      }
+      if (bd.nova_group && bd.nova_group > 0) {
+        var nvb = document.createElement('span');
+        nvb.className = 'nova-badge nova-' + bd.nova_group;
+        nvb.textContent = 'NOVA ' + bd.nova_group;
+        badgeRow.appendChild(nvb);
+      }
+      if (badgeRow.childNodes.length) productText.appendChild(badgeRow);
+      productInner.appendChild(productText);
+      productCard.appendChild(productInner);
+
+      // Source label
+      var srcLabel = document.createElement('div');
+      srcLabel.className = 'source-label';
+      srcLabel.textContent = bd.source === 'off_api' ? t.sourceOFF : t.sourceD1;
+      productCard.appendChild(srcLabel);
+      container.appendChild(productCard);
+    }
+
+    // Israeli FOPL warnings (sugar >10g, sodium >400mg, saturated fat >4g per 100g)
+    if (bd.nutrition) {
+      var warnings = [];
+      if (bd.nutrition.sugars != null && bd.nutrition.sugars > 10) warnings.push({ label: t.foplHighSugar, val: bd.nutrition.sugars + 'g' });
+      if (bd.nutrition.sodium != null && bd.nutrition.sodium > 400) warnings.push({ label: t.foplHighSodium, val: bd.nutrition.sodium + 'mg' });
+      if (bd.nutrition.saturated_fat != null && bd.nutrition.saturated_fat > 4) warnings.push({ label: t.foplHighSatFat, val: bd.nutrition.saturated_fat + 'g' });
+
+      if (warnings.length > 0) {
+        var foplCard = document.createElement('div');
+        foplCard.className = 'fopl-card animate-in stagger-2';
+        var foplTitle = document.createElement('div');
+        foplTitle.className = 'fopl-title';
+        foplTitle.textContent = t.foplWarning;
+        foplCard.appendChild(foplTitle);
+        var foplRow = document.createElement('div');
+        foplRow.className = 'fopl-badges';
+        for (var wi = 0; wi < warnings.length; wi++) {
+          var wb = document.createElement('div');
+          wb.className = 'fopl-badge';
+          var wIcon = document.createElement('span');
+          wIcon.className = 'fopl-icon';
+          wIcon.textContent = '\u26A0';
+          wb.appendChild(wIcon);
+          var wText = document.createElement('div');
+          wText.className = 'fopl-text';
+          var wLabel = document.createElement('div');
+          wLabel.className = 'fopl-label';
+          wLabel.textContent = warnings[wi].label;
+          var wVal = document.createElement('div');
+          wVal.className = 'fopl-val';
+          wVal.textContent = warnings[wi].val + ' / 100g';
+          wText.appendChild(wLabel);
+          wText.appendChild(wVal);
+          wb.appendChild(wText);
+          foplRow.appendChild(wb);
+        }
+        foplCard.appendChild(foplRow);
+        container.appendChild(foplCard);
+      }
+
+      // Nutrition table
+      var nutCard = document.createElement('div');
+      nutCard.className = 'nutrition-card animate-in stagger-3';
+      var nutTitle = document.createElement('div');
+      nutTitle.className = 'nutrition-title';
+      nutTitle.textContent = t.nutritionTitle;
+      nutCard.appendChild(nutTitle);
+      var nutGrid = document.createElement('div');
+      nutGrid.className = 'nutrition-grid';
+      var nutRows = [
+        [t.calories, bd.nutrition.energy_kcal, 'kcal'],
+        [t.fat, bd.nutrition.fat, 'g'],
+        [t.saturatedFat, bd.nutrition.saturated_fat, 'g'],
+        [t.carbs, bd.nutrition.carbohydrates, 'g'],
+        [t.sugars, bd.nutrition.sugars, 'g'],
+        [t.protein, bd.nutrition.protein, 'g'],
+        [t.fiber, bd.nutrition.fiber, 'g'],
+        [t.sodium, bd.nutrition.sodium, 'mg'],
+        [t.salt, bd.nutrition.salt, 'g'],
+      ];
+      for (var ni = 0; ni < nutRows.length; ni++) {
+        if (nutRows[ni][1] == null) continue;
+        var nr = document.createElement('div');
+        nr.className = 'nut-row';
+        var nLabel = document.createElement('span');
+        nLabel.className = 'nut-label';
+        nLabel.textContent = nutRows[ni][0];
+        var nVal = document.createElement('span');
+        nVal.className = 'nut-value';
+        var val = typeof nutRows[ni][1] === 'number' ? Math.round(nutRows[ni][1] * 10) / 10 : nutRows[ni][1];
+        nVal.textContent = val + nutRows[ni][2];
+        // Highlight concerning values
+        if (nutRows[ni][0] === t.sugars && bd.nutrition.sugars > 10) nVal.classList.add('high');
+        if (nutRows[ni][0] === t.sodium && bd.nutrition.sodium > 400) nVal.classList.add('high');
+        if (nutRows[ni][0] === t.saturatedFat && bd.nutrition.saturated_fat > 4) nVal.classList.add('high');
+        nr.appendChild(nLabel);
+        nr.appendChild(nVal);
+        nutGrid.appendChild(nr);
+      }
+      nutCard.appendChild(nutGrid);
+      container.appendChild(nutCard);
+    }
+
+    // Allergens
+    if (bd.allergens && bd.allergens.length > 0) {
+      var allergCard = document.createElement('div');
+      allergCard.className = 'allergen-card animate-in stagger-4';
+      var allergTitle = document.createElement('div');
+      allergTitle.className = 'allergen-title';
+      allergTitle.textContent = t.allergensTitle;
+      allergCard.appendChild(allergTitle);
+      var allergRow = document.createElement('div');
+      allergRow.className = 'allergen-badges';
+      for (var ai = 0; ai < bd.allergens.length; ai++) {
+        var ab = document.createElement('span');
+        ab.className = 'allergen-badge';
+        ab.textContent = bd.allergens[ai];
+        allergRow.appendChild(ab);
+      }
+      allergCard.appendChild(allergRow);
+
+      // Traces
+      if (bd.traces && bd.traces.length > 0) {
+        var trTitle = document.createElement('div');
+        trTitle.className = 'traces-title';
+        trTitle.textContent = t.tracesTitle;
+        allergCard.appendChild(trTitle);
+        var trRow = document.createElement('div');
+        trRow.className = 'allergen-badges traces';
+        for (var ti = 0; ti < bd.traces.length; ti++) {
+          var tb = document.createElement('span');
+          tb.className = 'allergen-badge trace';
+          tb.textContent = bd.traces[ti];
+          trRow.appendChild(tb);
+        }
+        allergCard.appendChild(trRow);
+      }
+      container.appendChild(allergCard);
+    }
+  }
+
+  // Ingredient sections
+  var sections = [
+    { key: 'red', label: t.sectionFlagged, color: 'red' },
+    { key: 'yellow', label: t.sectionWorthKnowing, color: 'yellow' },
+    { key: 'green', label: t.sectionAllClear, color: 'green' },
+    { key: 'gray', label: t.sectionUnknown, color: 'gray' },
+  ];
+
+  var staggerIdx = 0;
+  for (var seci = 0; seci < sections.length; seci++) {
+    var sec = sections[seci];
+    if (groups[sec.key].length === 0) continue;
+    var sectionLabel = document.createElement('div');
+    sectionLabel.className = 'section-label ' + sec.color + ' animate-in stagger-' + Math.min(++staggerIdx, 4);
+    var dot = document.createElement('span');
+    dot.className = 'dot';
+    sectionLabel.appendChild(dot);
+    sectionLabel.appendChild(document.createTextNode(' ' + sec.label + ' (' + groups[sec.key].length + ')'));
+    container.appendChild(sectionLabel);
+
+    for (var ci = 0; ci < groups[sec.key].length; ci++) {
+      container.appendChild(createIngredientCard(groups[sec.key][ci], t));
+    }
+  }
+
+  // Animate score ring
+  requestAnimationFrame(function() {
+    setTimeout(function() {
+      fillCircle.style.strokeDashoffset = String(offset);
+      animateNumber(scoreNum, 0, score, 1000);
+    }, 300);
+  });
+}
+
+var CATEGORY_HE_MAP = {
+  'base_ingredient': 'מרכיב בסיסי', 'sweetener_natural': 'ממתיק טבעי', 'sweetener_artificial': 'ממתיק מלאכותי',
+  'sweetener': 'ממתיק', 'stabilizer': 'מייצב', 'Preservative': 'חומר משמר', 'preservative': 'חומר משמר',
+  'acid': 'חומצה', 'acidity_regulator': 'מווסת חומציות', 'Flavoring': 'חומר טעם', 'flavoring': 'חומר טעם',
+  'emulsifier': 'מתחלב', 'thickener': 'מעבה', 'colorant': 'צבע מאכל', 'antioxidant': 'נוגד חמצון',
+  'oils_fats': 'שמנים ושומנים', 'protein': 'חלבון', 'starch': 'עמילן', 'sugar': 'סוכר',
+  'mineral': 'מינרל', 'vitamin': 'ויטמין', 'fiber': 'סיב תזונתי', 'dairy': 'מוצר חלב',
+  'meat': 'בשר', 'spice': 'תבלין', 'herb': 'עשב תיבול', 'salt': 'מלח',
+  'emulsifier|stabilizer': 'מתחלב / מייצב', 'gum': 'מעבה', 'plant_proteins': 'חלבון צמחי',
+  'food_acid': 'חומצת מזון', 'flavor_enhancer': 'מגבר טעם', 'humectant': 'לחותן',
+  'raising_agent': 'חומר תפיחה', 'anti_caking': 'נוגד גיבוש', 'glazing_agent': 'חומר ציפוי',
+  'sequestrant': 'חומר כולא', 'firming_agent': 'חומר מייצק', 'carrier': 'נושא',
+  'whole_food': 'מזון שלם', 'colorant_natural': 'צבע מאכל טבעי', 'colorant_artificial': 'צבע מאכל מלאכותי',
+  'fat': 'שומן', 'oil': 'שמן', 'flour': 'קמח', 'egg': 'ביצה', 'water': 'מים',
+  'flavor_enhancers': 'מגבר טעם', 'emulsifiers': 'מתחלב', 'efsa_colours': 'צבע מאכל',
+  'halal_kosher': 'כשר / חלאל', 'acid/spice': 'חומצה / תבלין',
+  'vitamins_minerals': 'ויטמין', 'seasoning': 'תיבול', 'fortification': 'העשרה',
+  'Spice': 'תבלין', 'baby_food': 'מזון תינוקות', 'sports_nutrition': 'תזונת ספורט',
+  'allergens': 'אלרגן', 'contaminants': 'מזהם', 'clean_label': 'תווית נקייה',
+};
+var CATEGORY_RU_MAP = {
+  'base_ingredient': 'Основной ингредиент', 'sweetener_natural': 'Натуральный подсластитель',
+  'sweetener_artificial': 'Искусственный подсластитель', 'sweetener': 'Подсластитель',
+  'stabilizer': 'Стабилизатор', 'Preservative': 'Консервант', 'preservative': 'Консервант',
+  'acid': 'Кислота', 'acidity_regulator': 'Регулятор кислотности',
+  'Flavoring': 'Ароматизатор', 'flavoring': 'Ароматизатор',
+  'emulsifier': 'Эмульгатор', 'thickener': 'Загуститель', 'colorant': 'Пищевой краситель',
+  'antioxidant': 'Антиоксидант', 'oils_fats': 'Масла и жиры', 'protein': 'Белок',
+  'starch': 'Крахмал', 'sugar': 'Сахар', 'mineral': 'Минерал', 'vitamin': 'Витамин',
+  'fiber': 'Пищевое волокно', 'dairy': 'Молочный продукт', 'meat': 'Мясо',
+  'spice': 'Специя', 'herb': 'Пряная трава', 'salt': 'Соль',
+  'emulsifier|stabilizer': 'Эмульгатор / Стабилизатор', 'gum': 'Загуститель',
+  'plant_proteins': 'Растительный белок', 'food_acid': 'Пищевая кислота',
+  'flavor_enhancer': 'Усилитель вкуса', 'humectant': 'Влагоудерживающий агент',
+  'raising_agent': 'Разрыхлитель', 'anti_caking': 'Антислёживающий агент',
+  'glazing_agent': 'Глазирующий агент', 'sequestrant': 'Комплексообразователь',
+  'firming_agent': 'Уплотнитель', 'carrier': 'Носитель',
+  'whole_food': 'Цельный продукт', 'colorant_natural': 'Натуральный краситель',
+  'colorant_artificial': 'Искусственный краситель', 'fat': 'Жир', 'oil': 'Масло',
+  'flour': 'Мука', 'egg': 'Яйцо', 'water': 'Вода',
+  'flavor_enhancers': 'Усилитель вкуса', 'emulsifiers': 'Эмульгатор',
+  'efsa_colours': 'Пищевой краситель', 'halal_kosher': 'Халяль / Кошер',
+  'acid/spice': 'Кислота / Специя',
+};
+function createIngredientCard(ingredient, t) {
+  var card = document.createElement('div');
+  card.className = 'ingredient-card level-' + ingredient.level + ' animate-in';
+
+  var top = document.createElement('div');
+  top.className = 'card-top';
+
+  var nameEl = document.createElement('div');
+  nameEl.className = 'card-name';
+  var displayName = currentLang === 'he' ? (ingredient.name_he || ingredient.name)
+    : currentLang === 'ru' ? (ingredient.name_ru || ingredient.name)
+    : ingredient.name;
+  nameEl.textContent = displayName;
+  // Show original input name as subtitle if resolved to different display name
+  if (displayName !== ingredient.name && ingredient.name) {
+    // Clean up messy input: strip dangling parens, trim
+    var subText = ingredient.name.replace(/^\s*[(\[]+\s*/, '').replace(/\s*[)\]]+\s*$/, '').trim();
+    if (subText && subText !== displayName) {
+      var nameEn = document.createElement('div');
+      nameEn.className = 'card-name-sub';
+      nameEn.style.cssText = 'font-size:11px;opacity:0.6;font-weight:400;margin-top:1px';
+      nameEn.textContent = subText;
+      nameEl.appendChild(nameEn);
+    }
+  }
+
+  var badges = document.createElement('div');
+  badges.className = 'card-badges';
+
+  if (ingredient.e_number && ingredient.e_number !== 'N/A') {
+    var eBadge = document.createElement('span');
+    eBadge.className = 'badge e-number';
+    eBadge.textContent = ingredient.e_number;
+    badges.appendChild(eBadge);
+  }
+  if (ingredient.level !== 'gray' && ingredient.score !== null) {
+    var levelBadge = document.createElement('span');
+    levelBadge.className = 'badge ' + ingredient.level;
+    levelBadge.textContent = ingredient.score + '/100';
+    badges.appendChild(levelBadge);
+  }
+
+  top.appendChild(nameEl);
+  top.appendChild(badges);
+  card.appendChild(top);
+
+  var func = document.createElement('div');
+  func.className = 'card-function';
+  var funcText;
+  if (currentLang === 'he') {
+    var heFunc = ingredient.function_he || ingredient.category_he || CATEGORY_HE_MAP[ingredient.category] || '';
+    funcText = heFunc || ingredient.function_en || ingredient.health_concerns || '';
+  } else if (currentLang === 'ru') {
+    var ruFunc = CATEGORY_RU_MAP[ingredient.category] || '';
+    funcText = ruFunc || ingredient.function_en || ingredient.health_concerns || '';
+  } else {
+    funcText = ingredient.function_en || ingredient.health_concerns || '';
+  }
+  func.textContent = funcText.replace(/\|/g, ' / ');
+  card.appendChild(func);
+
+  if (ingredient.level !== 'gray') {
+    var expand = document.createElement('div');
+    expand.className = 'card-expand';
+    var expandText = document.createElement('span');
+    expandText.textContent = t.moreDetails;
+    expand.appendChild(expandText);
+    expand.appendChild(createSVG(['M6 9l6 6 6-6'], 14, 2.5));
+    card.appendChild(expand);
+  }
+
+  var details = document.createElement('div');
+  details.className = 'card-details';
+
+  // === HEALTH CONCERNS — the "WHY" — always first ===
+  var concerns = (currentLang === 'he' && ingredient.health_concerns_he) ? ingredient.health_concerns_he : (ingredient.health_concerns || '');
+  if (concerns && concerns.length > 3) {
+    var whyRow = document.createElement('div');
+    whyRow.className = 'detail-row detail-why';
+    var whyLabel = document.createElement('span');
+    whyLabel.className = 'detail-label';
+    whyLabel.textContent = t.detailWhyScore;
+    var whyVal = document.createElement('span');
+    whyVal.className = 'detail-value detail-concerns';
+    var concernParts = concerns.split(/;\s*/);
+    if (concernParts.length > 1) {
+      concernParts.forEach(function(part, idx) {
+        if (!part.trim()) return;
+        var line = document.createElement('div');
+        line.textContent = '• ' + part.trim();
+        if (idx > 0) line.style.marginTop = '2px';
+        whyVal.appendChild(line);
+      });
+    } else {
+      whyVal.textContent = concerns;
+    }
+    whyRow.appendChild(whyLabel);
+    whyRow.appendChild(whyVal);
+    details.appendChild(whyRow);
+  } else if (ingredient.level === 'green') {
+    var safeRow = document.createElement('div');
+    safeRow.className = 'detail-row detail-why';
+    var safeLabel = document.createElement('span');
+    safeLabel.className = 'detail-label';
+    safeLabel.textContent = t.detailWhyScore;
+    var safeVal = document.createElement('span');
+    safeVal.className = 'detail-value';
+    safeVal.textContent = t.detailGenerallySafe;
+    safeRow.appendChild(safeLabel);
+    safeRow.appendChild(safeVal);
+    details.appendChild(safeRow);
+  }
+
+  // === Warning badges: allergen, children, pregnancy, hyperactivity ===
+  var warnings = [];
+  if (ingredient.allergen && ingredient.allergen !== 'no' && ingredient.allergen !== 'No' && ingredient.allergen !== 'None' && ingredient.allergen !== 'none' && ingredient.allergen !== 'N/A') {
+    warnings.push({ icon: '⚠', text: t.detailAllergen + ': ' + ingredient.allergen, cls: 'warn-allergen' });
+  }
+  if (ingredient.children_safe && ingredient.children_safe.toLowerCase() === 'no') {
+    warnings.push({ icon: '👶', text: t.detailChildrenUnsafe, cls: 'warn-children' });
+  }
+  if (ingredient.pregnancy_safe && ingredient.pregnancy_safe.toLowerCase() === 'no') {
+    warnings.push({ icon: '🤰', text: t.detailPregnancyUnsafe, cls: 'warn-pregnancy' });
+  }
+  if (ingredient.hyperactivity) {
+    warnings.push({ icon: '⚡', text: t.detailHyperactivity, cls: 'warn-hyperactivity' });
+  }
+  if (warnings.length > 0) {
+    var warnContainer = document.createElement('div');
+    warnContainer.className = 'detail-warnings';
+    for (var wi = 0; wi < warnings.length; wi++) {
+      var warnEl = document.createElement('div');
+      warnEl.className = 'detail-warning ' + warnings[wi].cls;
+      warnEl.textContent = warnings[wi].icon + ' ' + warnings[wi].text;
+      warnContainer.appendChild(warnEl);
+    }
+    details.appendChild(warnContainer);
+  }
+
+  // === Standard detail rows ===
+  var detailRows = [];
+  if (ingredient.level !== 'gray') {
+    var levelText = ingredient.level === 'green' ? t.safeLevel : ingredient.level === 'yellow' ? t.cautionLevel : t.concernLevel;
+    detailRows.push([t.detailSafety, levelText]);
+  }
+  if (ingredient.iarc_group) {
+    detailRows.push([t.detailIARC, ingredient.iarc_group]);
+  }
+  if (ingredient.banned_countries) {
+    detailRows.push([t.detailBannedIn, ingredient.banned_countries]);
+  }
+  if (ingredient.adi !== undefined && ingredient.adi) {
+    var adiVal = ingredient.adi;
+    if (adiVal === 'NOT SPECIFIED' || adiVal === 'Not specified' || adiVal === 'NOT SPECIFIED mg/kg bw') {
+      adiVal = t.noADI;
+    }
+    detailRows.push([t.detailADI, adiVal]);
+  }
+  if (ingredient.regulation && ingredient.regulation !== 'unknown') {
+    var regText = ingredient.regulation === 'permitted' ? t.regulationPermitted :
+                  ingredient.regulation === 'restricted' ? t.regulationRestricted :
+                  ingredient.regulation === 'banned' ? t.regulationBanned : ingredient.regulation;
+    detailRows.push([t.detailRegulation, regText]);
+  }
+  if (ingredient.common_foods) {
+    detailRows.push([t.detailFoundIn, ingredient.common_foods]);
+  }
+
+  for (var di = 0; di < detailRows.length; di++) {
+    var row = document.createElement('div');
+    row.className = 'detail-row';
+    var labelEl = document.createElement('span');
+    labelEl.className = 'detail-label';
+    labelEl.textContent = detailRows[di][0];
+    var valEl = document.createElement('span');
+    valEl.className = 'detail-value';
+    valEl.textContent = detailRows[di][1];
+    row.appendChild(labelEl);
+    row.appendChild(valEl);
+    details.appendChild(row);
+  }
+  card.appendChild(details);
+
+  card.addEventListener('click', function() { card.classList.toggle('expanded'); });
+  return card;
+}
+
+function animateNumber(el, from, to, duration) {
+  var start = performance.now();
+  function tick(now) {
+    var elapsed = now - start;
+    var progress = Math.min(elapsed / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = String(Math.round(from + (to - from) * eased));
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ===== SHARE =====
+function shareResults() {
+  if (!lastResults) return;
+  var score = calculateOverallScore(lastResults);
+  var level = getScoreLevel(score);
+  var t = LANG[currentLang];
+  var verdict = level === 'green' ? t.verdictSafe : level === 'yellow' ? t.verdictCaution : t.verdictConcern;
+
+  // Populate share card
+  var ringColor = level === 'green' ? '#4CAF50' : level === 'yellow' ? '#FFA726' : '#E53935';
+  var ringTrack = document.getElementById('sc-ring-track');
+  ringTrack.style.setProperty('--ring-color', ringColor);
+  ringTrack.style.setProperty('--ring-pct', score + '%');
+  document.getElementById('sc-score').textContent = String(score);
+  document.getElementById('sc-score').style.color = ringColor;
+  document.getElementById('sc-verdict').textContent = verdict;
+
+  // Product name
+  var productEl = document.getElementById('sc-product');
+  if (lastBarcodeData && (lastBarcodeData.product_name || lastBarcodeData.product_name_he)) {
+    productEl.textContent = currentLang === 'he'
+      ? (lastBarcodeData.product_name_he || lastBarcodeData.product_name)
+      : (lastBarcodeData.product_name || lastBarcodeData.product_name_he);
+    productEl.style.display = '';
+  } else {
+    productEl.style.display = 'none';
+  }
+
+  // Stats — use r.level property (same as renderResults)
+  var groups = { green: [], yellow: [], red: [], gray: [] };
+  for (var i = 0; i < lastResults.length; i++) {
+    var r = lastResults[i];
+    var grp = groups[r.level] || groups.gray;
+    grp.push(r);
+  }
+  var statsEl = document.getElementById('sc-stats');
+  statsEl.textContent = '';
+  var statsData = [
+    { num: groups.green.length, label: currentLang === 'he' ? 'תקין' : 'Clear', cls: 'green' },
+    { num: groups.yellow.length, label: currentLang === 'he' ? 'לתשומת לב' : 'Caution', cls: 'yellow' },
+    { num: groups.red.length, label: currentLang === 'he' ? 'מסומן' : 'Flagged', cls: 'red' },
+  ];
+  for (var j = 0; j < statsData.length; j++) {
+    var sd = document.createElement('div');
+    var sn = document.createElement('div');
+    sn.className = 'share-card-stat-num ' + statsData[j].cls;
+    sn.textContent = String(statsData[j].num);
+    var sl = document.createElement('div');
+    sl.className = 'share-card-stat-label';
+    sl.textContent = statsData[j].label;
+    sd.appendChild(sn);
+    sd.appendChild(sl);
+    statsEl.appendChild(sd);
+  }
+
+  // Flagged ingredient names (top 5)
+  var flagsEl = document.getElementById('sc-flags');
+  flagsEl.textContent = '';
+  var flagged = groups.red.concat(groups.yellow).slice(0, 5);
+  for (var k = 0; k < flagged.length; k++) {
+    var flag = document.createElement('span');
+    var fLv = flagged[k].level === 'red' ? 'red' : 'yellow';
+    flag.className = 'share-card-flag ' + fLv;
+    flag.textContent = currentLang === 'he' ? (flagged[k].name_he || flagged[k].name) : currentLang === 'ru' ? (flagged[k].name_ru || flagged[k].name) : flagged[k].name;
+    flagsEl.appendChild(flag);
+  }
+
+  // Show generating overlay
+  var overlay = document.createElement('div');
+  overlay.className = 'share-generating';
+  var inner = document.createElement('div');
+  inner.className = 'share-generating-inner';
+  inner.textContent = currentLang === 'he' ? '...יוצר תמונה לשיתוף' : 'Creating share image...';
+  overlay.appendChild(inner);
+  document.body.appendChild(overlay);
+
+  // Move share card on-screen temporarily for html2canvas
+  var container = document.getElementById('share-card-container');
+  container.style.left = '0';
+  container.style.zIndex = '1';
+
+  setTimeout(function() {
+    if (typeof html2canvas === 'undefined') {
+      // Fallback: text share if html2canvas didn't load
+      container.style.left = '-9999px';
+      container.style.zIndex = '-1';
+      overlay.remove();
+      var text = 'HealthyScan: ' + score + '/100 — ' + verdict + '\nhttps://healthy-scan.app';
+      if (navigator.share) {
+        navigator.share({ title: 'HealthyScan', text: text }).catch(function() {});
+      } else {
+        navigator.clipboard.writeText(text).catch(function() {});
+      }
+      return;
+    }
+
+    html2canvas(document.getElementById('share-card'), {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      width: 420,
+      logging: false,
+    }).then(function(canvas) {
+      container.style.left = '-9999px';
+      container.style.zIndex = '-1';
+      overlay.remove();
+
+      canvas.toBlob(function(blob) {
+        if (!blob) return;
+        var file = new File([blob], 'healthyscan-result.png', { type: 'image/png' });
+        var text = 'HealthyScan: ' + score + '/100 — ' + verdict + '\nhttps://healthy-scan.app';
+
+        // Try native share with image (mobile)
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          navigator.share({
+            title: 'HealthyScan',
+            text: text,
+            files: [file],
+          }).catch(function() {});
+        } else if (navigator.share) {
+          // Share without image
+          navigator.share({ title: 'HealthyScan', text: text }).catch(function() {});
+        } else {
+          // Desktop fallback: download the image
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = 'healthyscan-result.png';
+          a.click();
+          URL.revokeObjectURL(a.href);
+        }
+      }, 'image/png');
+    }).catch(function() {
+      container.style.left = '-9999px';
+      container.style.zIndex = '-1';
+      overlay.remove();
+    });
+  }, 100);
+}
+
+// ===== CAMERA =====
+function startCamera() {
+  var video = document.getElementById('camera-feed');
+  var errorEl = document.getElementById('camera-error');
+  navigator.mediaDevices.getUserMedia({
+    video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }
+  }).then(function(stream) {
+    cameraStream = stream;
+    video.srcObject = stream;
+    errorEl.style.display = 'none';
+  }).catch(function() {
+    errorEl.style.display = 'flex';
+  });
+}
+
+function stopCamera() {
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(function(t) { t.stop(); });
+    cameraStream = null;
+  }
+  document.getElementById('camera-feed').srcObject = null;
+}
+
+function showOcrError(msg) {
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#c0392b,#922b21);color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,0.3);text-align:center;max-width:85%;line-height:1.5;animation:fadeIn 0.3s ease';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.5s';
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 500);
+  }, 5000);
+}
+
+function capturePhoto() {
+  if (!cameraStream) return;
+  var video = document.getElementById('camera-feed');
+  var canvas = document.getElementById('camera-canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  document.getElementById('camera-processing').classList.add('active');
+
+  // Get base64 JPEG
+  var base64 = canvas.toDataURL('image/jpeg', 0.85).replace(/^data:image\/jpeg;base64,/, '');
+
+  // Send to OCR API
+  fetch('/api/food-scan-ocr', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ image: base64 }),
+  })
+  .then(function(res) {
+    if (!res.ok) return res.json().then(function(d) { throw new Error(d.error || 'OCR failed'); });
+    return res.json();
+  })
+  .then(function(data) {
+    document.getElementById('camera-processing').classList.remove('active');
+    stopCamera();
+    if (data.error) {
+      // Show error toast (e.g., rate limit) and go to paste screen
+      showOcrError(data.error);
+      showScreen('paste-screen');
+      return;
+    }
+    if (data.ingredients && data.ingredients.length > 0) {
+      // Pre-fill paste screen with OCR results, then auto-analyze
+      var ingredientsText = data.ingredients.join(', ');
+      document.getElementById('ingredients-input').value = ingredientsText;
+      document.getElementById('ingredients-input').dispatchEvent(new Event('input'));
+      // Cache barcode → ingredients if we had a pending barcode miss
+      if (pendingBarcodeForCache) {
+        cacheBarcode(pendingBarcodeForCache, ingredientsText);
+        pendingBarcodeForCache = null;
+      }
+      analyzeIngredients();
+    } else {
+      // No ingredients found — show message and go to paste screen
+      showOcrError(currentLang === 'he' ? 'לא זוהו רכיבים בתמונה. נסו שוב עם תמונה ברורה יותר.' : 'No ingredients detected. Try a clearer photo.');
+      showScreen('paste-screen');
+    }
+  })
+  .catch(function(err) {
+    // OCR unavailable — show error and fall back to paste
+    document.getElementById('camera-processing').classList.remove('active');
+    var msg = (err && err.message) || '';
+    if (msg.includes('limit')) {
+      showOcrError(currentLang === 'he' ? 'הגעת למגבלת הסריקות היומית. נסו שוב מחר או הדביקו רכיבים ידנית.' : 'Daily scan limit reached. Try again tomorrow or paste ingredients manually.');
+    } else {
+      showOcrError(currentLang === 'he' ? 'שגיאה בסריקה. נסו שוב או הדביקו רכיבים ידנית.' : 'Scan error. Try again or paste ingredients manually.');
+    }
+    showScreen('paste-screen');
+    stopCamera();
+  });
+}
+
+function setScanMode(mode) {
+  scanMode = mode;
+  document.querySelectorAll('.scan-mode-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.getAttribute('data-mode') === mode);
+  });
+  var t = LANG[currentLang];
+  var hint = document.querySelector('.camera-hint span');
+  if (hint) hint.textContent = mode === 'barcode' ? t.cameraHintBarcode : t.cameraHint;
+  // Toggle scan line and barcode status
+  var scanLine = document.getElementById('scan-line');
+  var barcodeStatus = document.getElementById('barcode-status');
+  if (scanLine) scanLine.classList.toggle('active', mode === 'barcode');
+  if (barcodeStatus) barcodeStatus.style.display = mode === 'barcode' ? '' : 'none';
+}
+
+// ===== HISTORY =====
+function getHistory() {
+  try { return JSON.parse(localStorage.getItem('hs-history') || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveToHistory(text, results) {
+  var history = getHistory();
+  var score = calculateOverallScore(results);
+  history.unshift({
+    preview: text.substring(0, 60),
+    score: score,
+    level: getScoreLevel(score),
+    date: new Date().toISOString(),
+    ingredients: text
+  });
+  if (history.length > 10) history.length = 10;
+  localStorage.setItem('hs-history', JSON.stringify(history));
+}
+
+function renderHistory() {
+  var history = getHistory();
+  var section = document.getElementById('history-section');
+  var list = document.getElementById('history-list');
+  if (history.length === 0) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  while (list.firstChild) list.removeChild(list.firstChild);
+
+  var items = history.slice(0, 5);
+  for (var i = 0; i < items.length; i++) {
+    (function(item) {
+      var el = document.createElement('div');
+      el.className = 'history-item';
+      var scoreBubble = document.createElement('div');
+      scoreBubble.className = 'history-score ' + item.level;
+      scoreBubble.textContent = String(item.score);
+      var info = document.createElement('div');
+      info.className = 'history-info';
+      var nameEl = document.createElement('div');
+      nameEl.className = 'history-name';
+      nameEl.textContent = item.preview;
+      var dateEl = document.createElement('div');
+      dateEl.className = 'history-date';
+      dateEl.textContent = formatDate(item.date);
+      info.appendChild(nameEl);
+      info.appendChild(dateEl);
+      el.appendChild(scoreBubble);
+      el.appendChild(info);
+      el.addEventListener('click', function() {
+        document.getElementById('ingredients-input').value = item.ingredients;
+        document.getElementById('ingredients-input').dispatchEvent(new Event('input'));
+        analyzeIngredients();
+      });
+      list.appendChild(el);
+    })(items[i]);
+  }
+}
+
+function formatDate(iso) {
+  try {
+    var d = new Date(iso);
+    var diff = Date.now() - d.getTime();
+    var t = LANG[currentLang];
+    if (diff < 60000) return t.justNow;
+    if (diff < 3600000) return Math.floor(diff / 60000) + t.minutesAgo;
+    if (diff < 86400000) return Math.floor(diff / 3600000) + t.hoursAgo;
+    return d.toLocaleDateString(currentLang === 'he' ? 'he-IL' : currentLang === 'ru' ? 'ru-RU' : 'en-US', { month: 'short', day: 'numeric' });
+  } catch(e) { return ''; }
+}
+
+// ===== PWA INSTALL =====
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!localStorage.getItem('hs-install-dismissed')) {
+    document.getElementById('install-banner').classList.add('show');
+  }
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function() {
+      deferredPrompt = null;
+      document.getElementById('install-banner').classList.remove('show');
+    });
+  }
+}
+
+function dismissInstall() {
+  document.getElementById('install-banner').classList.remove('show');
+  localStorage.setItem('hs-install-dismissed', '1');
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
+  applyLanguage();
+  renderHistory();
+  var input = document.getElementById('ingredients-input');
+  var submitBtn = document.getElementById('submit-btn');
+  input.addEventListener('input', function() { submitBtn.disabled = !input.value.trim(); });
+});
+
+// ===== BARCODE SCANNING =====
+var barcodeDetector = null;
+var barcodeScanInterval = null;
+var quaggaLoaded = false;
+var quaggaLoading = false;
+var lastBarcodeDetected = '';
+var lastBarcodeTime = 0;
+
+function initBarcodeScanner() {
+  if ('BarcodeDetector' in window) {
+    try {
+      barcodeDetector = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e'] });
+    } catch(e) { barcodeDetector = null; }
+  }
+  if (!barcodeDetector && !quaggaLoaded && !quaggaLoading) {
+    loadQuagga2();
+  }
+}
+
+function loadQuagga2() {
+  quaggaLoading = true;
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/@ericblade/quagga2@1.8.4/dist/quagga.min.js';
+  s.onload = function() { quaggaLoaded = true; quaggaLoading = false; };
+  s.onerror = function() { quaggaLoading = false; };
+  document.head.appendChild(s);
+}
+
+function startBarcodeScanning() {
+  if (!cameraStream || scanMode !== 'barcode') return;
+  lastBarcodeDetected = '';
+  lastBarcodeTime = 0;
+  var video = document.getElementById('camera-feed');
+
+  barcodeScanInterval = setInterval(function() {
+    if (scanMode !== 'barcode' || !cameraStream) { stopBarcodeScanning(); return; }
+    if (video.readyState < 2) return; // video not ready
+
+    if (barcodeDetector) {
+      barcodeDetector.detect(video).then(function(codes) {
+        if (codes && codes.length > 0) {
+          var code = codes[0].rawValue;
+          if (code && isValidBarcode(code)) {
+            confirmBarcode(code);
+          }
+        }
+      }).catch(function() {});
+    } else if (quaggaLoaded && window.Quagga) {
+      // Quagga2 fallback: decode from canvas
+      var canvas = document.getElementById('camera-canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      Quagga.decodeSingle({
+        src: dataUrl,
+        numOfWorkers: 0,
+        decoder: { readers: ['ean_reader', 'ean_8_reader', 'upc_reader', 'upc_e_reader'] },
+      }, function(result) {
+        if (result && result.codeResult && result.codeResult.code) {
+          var code = result.codeResult.code;
+          if (isValidBarcode(code)) {
+            confirmBarcode(code);
+          }
+        }
+      });
+    }
+  }, 300);
+}
+
+function isValidBarcode(code) {
+  return /^\d{8,14}$/.test(code);
+}
+
+function confirmBarcode(code) {
+  var now = Date.now();
+  if (code !== lastBarcodeDetected) {
+    // First read — store and wait for confirmation
+    lastBarcodeDetected = code;
+    lastBarcodeTime = now;
+    return;
+  }
+  // Same code detected again — confirm it
+  // Debounce: ignore repeated fires within 3s after a successful lookup
+  if (now - lastBarcodeTime < 300) return; // too fast, same frame
+  stopBarcodeScanning();
+  lastBarcodeTime = now; // prevent re-fire
+  handleBarcodeDetected(code);
+}
+
+function stopBarcodeScanning() {
+  if (barcodeScanInterval) {
+    clearInterval(barcodeScanInterval);
+    barcodeScanInterval = null;
+  }
+}
+
+function handleBarcodeDetected(barcode) {
+  document.getElementById('camera-processing').classList.add('active');
+  var t = LANG[currentLang];
+  var processingP = document.querySelector('#camera-processing .processing-content p');
+  if (processingP) processingP.textContent = currentLang === 'he' ? 'מחפש מוצר...' : 'Looking up product...';
+
+  fetch('/api/barcode-lookup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ barcode: barcode }),
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    document.getElementById('camera-processing').classList.remove('active');
+    if (processingP) processingP.textContent = t.processingText;
+    stopCamera();
+
+    if (data.found && (data.ingredients_parsed || data.ingredients_text)) {
+      // Full data — ingredients available, run full analysis
+      lastBarcodeData = data;
+      // Cache ingredients to barcode so next scan is instant from D1
+      var cacheText = data.ingredients_parsed ? data.ingredients_parsed.join(', ') : data.ingredients_text;
+      if (cacheText && data.barcode) {
+        cacheBarcode(data.barcode, cacheText);
+      }
+      if (data.ingredients_parsed && data.ingredients_parsed.length > 0) {
+        // Structured data from OFF — use canonical English names directly
+        document.getElementById('ingredients-input').value = data.ingredients_parsed.join(', ');
+        document.getElementById('ingredients-input').dispatchEvent(new Event('input'));
+        analyzeWithParsed(data.ingredients_parsed);
+      } else {
+        document.getElementById('ingredients-input').value = data.ingredients_text;
+        document.getElementById('ingredients-input').dispatchEvent(new Event('input'));
+        analyzeIngredients();
+      }
+    } else if (data.found && !data.ingredients_text) {
+      // Product found but no ingredients — show what we have, prompt for manual input
+      lastBarcodeData = data;
+      showProductFoundNoIngredients(data);
+    } else {
+      lastBarcodeData = null;
+      showBarcodeNotFound(barcode);
+    }
+  })
+  .catch(function() {
+    document.getElementById('camera-processing').classList.remove('active');
+    if (processingP) processingP.textContent = t.processingText;
+    lastBarcodeData = null;
+    showBarcodeNotFound(barcode);
+  });
+}
+
+function showProductFoundNoIngredients(data) {
+  stopCamera();
+  var t = LANG[currentLang];
+  // Save barcode-only scan to history
+  var productLabel = data.product_name_he || data.product_name || data.barcode || 'Barcode scan';
+  saveToHistory(productLabel, []);
+  var container = document.getElementById('results-container');
+  while (container.firstChild) container.removeChild(container.firstChild);
+
+  // Product info card (reuses same styles as full results)
+  var bd = data;
+  if (bd.product_name || bd.product_name_he) {
+    var productCard = document.createElement('div');
+    productCard.className = 'product-info-card animate-in';
+    var productInner = document.createElement('div');
+    productInner.className = 'product-info-inner';
+    if (bd.image_url) {
+      var img = document.createElement('img');
+      img.className = 'product-thumb';
+      img.src = bd.image_url;
+      img.alt = bd.product_name || '';
+      img.loading = 'lazy';
+      productInner.appendChild(img);
+    }
+    var productText = document.createElement('div');
+    productText.className = 'product-text';
+    var pName = document.createElement('div');
+    pName.className = 'product-name';
+    pName.textContent = currentLang === 'he'
+      ? (bd.product_name_he || bd.product_name)
+      : (bd.product_name || bd.product_name_he);
+    productText.appendChild(pName);
+    if (bd.brands) {
+      var pBrand = document.createElement('div');
+      pBrand.className = 'product-brand';
+      pBrand.textContent = bd.brands;
+      productText.appendChild(pBrand);
+    }
+    var badgeRow = document.createElement('div');
+    badgeRow.className = 'product-badge-row';
+    if (bd.nutri_score && bd.nutri_score !== 'unknown') {
+      var nsb = document.createElement('span');
+      nsb.className = 'nutri-badge grade-' + bd.nutri_score.toLowerCase();
+      nsb.textContent = 'Nutri-Score ' + bd.nutri_score.toUpperCase();
+      badgeRow.appendChild(nsb);
+    }
+    if (bd.nova_group && bd.nova_group > 0) {
+      var nvb = document.createElement('span');
+      nvb.className = 'nova-badge nova-' + bd.nova_group;
+      nvb.textContent = 'NOVA ' + bd.nova_group;
+      badgeRow.appendChild(nvb);
+    }
+    if (badgeRow.childNodes.length) productText.appendChild(badgeRow);
+    productInner.appendChild(productText);
+    productCard.appendChild(productInner);
+    var srcLabel = document.createElement('div');
+    srcLabel.className = 'source-label';
+    srcLabel.textContent = bd.source === 'off_api' ? t.sourceOFF : t.sourceD1;
+    productCard.appendChild(srcLabel);
+    container.appendChild(productCard);
+  }
+
+  // FOPL warnings
+  if (bd.nutrition) {
+    var warnings = [];
+    if (bd.nutrition.sugars != null && bd.nutrition.sugars > 10) warnings.push({ label: t.foplHighSugar, val: bd.nutrition.sugars + 'g' });
+    if (bd.nutrition.sodium != null && bd.nutrition.sodium > 400) warnings.push({ label: t.foplHighSodium, val: bd.nutrition.sodium + 'mg' });
+    if (bd.nutrition.saturated_fat != null && bd.nutrition.saturated_fat > 4) warnings.push({ label: t.foplHighSatFat, val: bd.nutrition.saturated_fat + 'g' });
+    if (warnings.length > 0) {
+      var foplCard = document.createElement('div');
+      foplCard.className = 'fopl-card animate-in stagger-1';
+      var foplTitle = document.createElement('div');
+      foplTitle.className = 'fopl-title';
+      foplTitle.textContent = t.foplWarning;
+      foplCard.appendChild(foplTitle);
+      var foplRow = document.createElement('div');
+      foplRow.className = 'fopl-badges';
+      for (var wi = 0; wi < warnings.length; wi++) {
+        var wb = document.createElement('div');
+        wb.className = 'fopl-badge';
+        var wIcon = document.createElement('span');
+        wIcon.className = 'fopl-icon';
+        wIcon.textContent = '\u26A0';
+        wb.appendChild(wIcon);
+        var wText = document.createElement('div');
+        wText.className = 'fopl-text';
+        var wLabel = document.createElement('div');
+        wLabel.className = 'fopl-label';
+        wLabel.textContent = warnings[wi].label;
+        var wVal = document.createElement('div');
+        wVal.className = 'fopl-val';
+        wVal.textContent = warnings[wi].val + ' / 100g';
+        wText.appendChild(wLabel);
+        wText.appendChild(wVal);
+        wb.appendChild(wText);
+        foplRow.appendChild(wb);
+      }
+      foplCard.appendChild(foplRow);
+      container.appendChild(foplCard);
+    }
+
+    // Nutrition table
+    var nutCard = document.createElement('div');
+    nutCard.className = 'nutrition-card animate-in stagger-2';
+    var nutTitle = document.createElement('div');
+    nutTitle.className = 'nutrition-title';
+    nutTitle.textContent = t.nutritionTitle;
+    nutCard.appendChild(nutTitle);
+    var nutGrid = document.createElement('div');
+    nutGrid.className = 'nutrition-grid';
+    var nutRows = [
+      [t.calories, bd.nutrition.energy_kcal, 'kcal'],
+      [t.fat, bd.nutrition.fat, 'g'],
+      [t.saturatedFat, bd.nutrition.saturated_fat, 'g'],
+      [t.sugars, bd.nutrition.sugars, 'g'],
+      [t.protein, bd.nutrition.protein, 'g'],
+      [t.fiber, bd.nutrition.fiber, 'g'],
+      [t.sodium, bd.nutrition.sodium, 'mg'],
+      [t.salt, bd.nutrition.salt, 'g'],
+    ];
+    for (var ni = 0; ni < nutRows.length; ni++) {
+      if (nutRows[ni][1] == null) continue;
+      var nr = document.createElement('div');
+      nr.className = 'nut-row';
+      var nLabel = document.createElement('span');
+      nLabel.className = 'nut-label';
+      nLabel.textContent = nutRows[ni][0];
+      var nVal = document.createElement('span');
+      nVal.className = 'nut-value';
+      var val = typeof nutRows[ni][1] === 'number' ? Math.round(nutRows[ni][1] * 10) / 10 : nutRows[ni][1];
+      nVal.textContent = val + nutRows[ni][2];
+      if (nutRows[ni][0] === t.sugars && bd.nutrition.sugars > 10) nVal.classList.add('high');
+      if (nutRows[ni][0] === t.sodium && bd.nutrition.sodium > 400) nVal.classList.add('high');
+      if (nutRows[ni][0] === t.saturatedFat && bd.nutrition.saturated_fat > 4) nVal.classList.add('high');
+      nr.appendChild(nLabel);
+      nr.appendChild(nVal);
+      nutGrid.appendChild(nr);
+    }
+    nutCard.appendChild(nutGrid);
+    container.appendChild(nutCard);
+  }
+
+  // Allergens
+  if (bd.allergens && bd.allergens.length > 0) {
+    var allergCard = document.createElement('div');
+    allergCard.className = 'allergen-card animate-in stagger-3';
+    var allergTitle = document.createElement('div');
+    allergTitle.className = 'allergen-title';
+    allergTitle.textContent = t.allergensTitle;
+    allergCard.appendChild(allergTitle);
+    var allergRow = document.createElement('div');
+    allergRow.className = 'allergen-badges';
+    for (var ai = 0; ai < bd.allergens.length; ai++) {
+      var ab = document.createElement('span');
+      ab.className = 'allergen-badge';
+      ab.textContent = bd.allergens[ai];
+      allergRow.appendChild(ab);
+    }
+    allergCard.appendChild(allergRow);
+    container.appendChild(allergCard);
+  }
+
+  // Set pending barcode for caching when user scans/pastes ingredients
+  pendingBarcodeForCache = bd.barcode || null;
+
+  // CTA: photograph ingredients (primary action)
+  var photoCtaCard = document.createElement('div');
+  photoCtaCard.className = 'verdict-card level-yellow animate-in stagger-4';
+  photoCtaCard.style.cssText = 'cursor:pointer;background:linear-gradient(135deg,#e8f4fd,#dbeeff);border:2px solid #2196F3;border-top:4px solid #FF9800';
+  var photoCtaText = document.createElement('div');
+  photoCtaText.style.cssText = 'text-align:center;padding:8px 0';
+  var photoCtaTitle = document.createElement('div');
+  photoCtaTitle.style.cssText = 'font-size:16px;font-weight:600;margin-bottom:4px;color:#1976D2';
+  photoCtaTitle.textContent = currentLang === 'he' ? 'צלם את רשימת הרכיבים' :
+    currentLang === 'ru' ? 'Сфотографируйте состав' : 'Photograph the ingredients list';
+  var photoCtaSub = document.createElement('div');
+  photoCtaSub.style.cssText = 'font-size:13px;opacity:0.8';
+  photoCtaSub.textContent = currentLang === 'he' ? 'הפוך את המוצר וצלם — הרכיבים יישמרו אוטומטית' :
+    currentLang === 'ru' ? 'Переверните продукт и сфотографируйте — состав сохранится автоматически' :
+    'Flip the product and snap — ingredients are saved automatically';
+  photoCtaText.appendChild(photoCtaTitle);
+  photoCtaText.appendChild(photoCtaSub);
+  photoCtaCard.appendChild(photoCtaText);
+  photoCtaCard.onclick = function() {
+    showScreen('camera-screen');
+    startCamera();
+    setScanMode('ingredients');
+  };
+  container.appendChild(photoCtaCard);
+
+  // Action buttons row
+  var actionRow = document.createElement('div');
+  actionRow.className = 'action-row animate-in stagger-5';
+  actionRow.style.cssText = 'display:flex;gap:10px;justify-content:center;margin-top:12px';
+
+  // Paste button (secondary)
+  var pasteBtn = document.createElement('button');
+  pasteBtn.className = 'btn-secondary';
+  pasteBtn.textContent = currentLang === 'he' ? 'הדבק רכיבים' :
+    currentLang === 'ru' ? 'Вставить состав' : 'Paste Ingredients';
+  pasteBtn.onclick = function() { showScreen('paste-screen'); document.getElementById('ingredients-input').focus(); };
+  actionRow.appendChild(pasteBtn);
+
+  // Scan another product button
+  var scanAgainBtn = document.createElement('button');
+  scanAgainBtn.className = 'btn-secondary';
+  scanAgainBtn.textContent = t.scanAnother;
+  scanAgainBtn.onclick = function() { pendingBarcodeForCache = null; showScreen('camera-screen'); startCamera(); };
+  actionRow.appendChild(scanAgainBtn);
+  container.appendChild(actionRow);
+
+  showScreen('results-screen');
+}
+
+var pendingBarcodeForCache = null;
+
+function cacheBarcode(barcode, ingredientsText) {
+  // Fire-and-forget: save barcode → ingredients so next scan finds it
+  fetch('/api/barcode-cache', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ barcode: barcode, ingredients_text: ingredientsText }),
+  }).catch(function() {}); // silent — caching failure shouldn't affect UX
+}
+
+function showBarcodeNotFound(barcode) {
+  // Don't stop camera — switch to OCR mode so user can scan ingredients
+  pendingBarcodeForCache = barcode;
+  setScanMode('photo');
+  stopBarcodeScanning();
+
+  // Show overlay message
+  var msg = currentLang === 'he'
+    ? 'לא מכירים את המוצר הזה עדיין — הפכו את המוצר וצלמו את הרכיבים'
+    : "We don't recognize this product yet — flip it over and scan the ingredients";
+  var toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#1a6b4a,#1A2332);color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,0.3);text-align:center;max-width:85%;line-height:1.5;animation:fadeIn 0.3s ease';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.5s';
+    setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 500);
+  }, 5000);
+}
+
+// Wire barcode scanning into camera lifecycle
+var _origStartCamera = startCamera;
+startCamera = function() {
+  _origStartCamera();
+  initBarcodeScanner();
+  // Apply scan line + hint for current mode
+  var scanLine = document.getElementById('scan-line');
+  var barcodeStatus = document.getElementById('barcode-status');
+  var hint = document.querySelector('.camera-hint span');
+  var t = LANG[currentLang];
+  if (scanLine) scanLine.classList.toggle('active', scanMode === 'barcode');
+  if (barcodeStatus) barcodeStatus.style.display = scanMode === 'barcode' ? '' : 'none';
+  if (hint) hint.textContent = scanMode === 'barcode' ? t.cameraHintBarcode : t.cameraHint;
+  if (scanMode === 'barcode') {
+    // Start scanning after camera is ready
+    var video = document.getElementById('camera-feed');
+    video.addEventListener('playing', function onPlaying() {
+      video.removeEventListener('playing', onPlaying);
+      if (scanMode === 'barcode') startBarcodeScanning();
+    });
+  }
+};
+
+var _origStopCamera = stopCamera;
+stopCamera = function() {
+  stopBarcodeScanning();
+  _origStopCamera();
+};
+
+var _origSetScanMode = setScanMode;
+setScanMode = function(mode) {
+  _origSetScanMode(mode);
+  if (mode === 'barcode' && cameraStream) {
+    startBarcodeScanning();
+  } else {
+    stopBarcodeScanning();
+  }
+};
+
+// Override capturePhoto to respect scan mode
+var _origCapturePhoto = capturePhoto;
+capturePhoto = function() {
+  if (scanMode === 'barcode') {
+    // In barcode mode, capture btn forces a single-shot scan
+    if (!cameraStream) return;
+    var video = document.getElementById('camera-feed');
+    if (barcodeDetector) {
+      barcodeDetector.detect(video).then(function(codes) {
+        if (codes && codes.length > 0 && isValidBarcode(codes[0].rawValue)) {
+          stopBarcodeScanning();
+          handleBarcodeDetected(codes[0].rawValue);
+        }
+      }).catch(function() {});
+    }
+    return;
+  }
+  _origCapturePhoto();
+};
+
+// ===== iHerb CHECKER =====
+var lastIHerbResults = null;
+
+(function() {
+  var input = document.getElementById('iherb-url-input');
+  var btn = document.getElementById('iherb-submit-btn');
+  if (input && btn) {
+    input.addEventListener('input', function() {
+      btn.disabled = !input.value.trim().includes('iherb.com/pr/');
+    });
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !btn.disabled) checkIHerb();
+    });
+  }
+})();
+
+function loadIHerbExample() {
+  var t = LANG[currentLang];
+  var input = document.getElementById('iherb-url-input');
+  input.value = t.iherbExampleUrl || 'https://il.iherb.com/pr/now-foods-melatonin-3-mg-180-lozenges/710';
+  input.dispatchEvent(new Event('input'));
+}
+
+function checkIHerb() {
+  var input = document.getElementById('iherb-url-input');
+  var url = input.value.trim();
+  var errorEl = document.getElementById('iherb-error');
+  errorEl.style.display = 'none';
+
+  if (!url || !url.includes('iherb.com/pr/')) return;
+
+  showScreen('iherb-loading-screen');
+
+  fetch('/api/iherb-check', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: url }),
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.error) {
+      showScreen('iherb-screen');
+      errorEl.textContent = data.error;
+      errorEl.style.display = 'block';
+      return;
+    }
+    lastIHerbResults = data;
+    renderIHerbResults(data);
+    showScreen('iherb-results-screen');
+  })
+  .catch(function(err) {
+    showScreen('iherb-screen');
+    errorEl.textContent = currentLang === 'he' ? 'שגיאה בבדיקת המוצר. נסו שוב.' : 'Error checking product. Please try again.';
+    errorEl.style.display = 'block';
+  });
+}
+
+function renderIHerbResults(data) {
+  var t = LANG[currentLang];
+  var container = document.getElementById('iherb-results-container');
+  while (container.firstChild) container.removeChild(container.firstChild);
+
+  var score = data.score;
+  var level = score >= 75 ? 'green' : score >= 50 ? 'yellow' : 'red';
+  var circumference = 2 * Math.PI * 54;
+  var offset = circumference * (1 - score / 100);
+
+  // ── Verdict Card ──
+  var verdictCard = document.createElement('div');
+  verdictCard.className = 'verdict-card level-' + level + ' animate-up';
+
+  // Score ring
+  var scoreWrap = document.createElement('div');
+  scoreWrap.className = 'score-ring-wrap';
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', '0 0 120 120');
+  var bgCircle = document.createElementNS(svgNS, 'circle');
+  bgCircle.setAttribute('class', 'score-ring-bg');
+  bgCircle.setAttribute('cx', '60'); bgCircle.setAttribute('cy', '60'); bgCircle.setAttribute('r', '54');
+  svg.appendChild(bgCircle);
+  var fillCircle = document.createElementNS(svgNS, 'circle');
+  fillCircle.setAttribute('class', 'score-ring-fill ' + level);
+  fillCircle.setAttribute('cx', '60'); fillCircle.setAttribute('cy', '60'); fillCircle.setAttribute('r', '54');
+  fillCircle.setAttribute('stroke-dasharray', String(circumference));
+  fillCircle.setAttribute('stroke-dashoffset', String(circumference));
+  svg.appendChild(fillCircle);
+  scoreWrap.appendChild(svg);
+
+  var scoreNum = document.createElement('div');
+  scoreNum.className = 'score-number';
+  scoreNum.textContent = '0';
+  scoreWrap.appendChild(scoreNum);
+  var scoreLbl = document.createElement('div');
+  scoreLbl.className = 'score-label';
+  scoreLbl.textContent = t.scoreLabel;
+  scoreWrap.appendChild(scoreLbl);
+  verdictCard.appendChild(scoreWrap);
+
+  // Animate score
+  setTimeout(function() {
+    fillCircle.setAttribute('stroke-dashoffset', String(offset));
+    var counter = { val: 0 };
+    var step = Math.max(1, Math.floor(score / 30));
+    var anim = setInterval(function() {
+      counter.val = Math.min(counter.val + step, score);
+      scoreNum.textContent = String(counter.val);
+      if (counter.val >= score) clearInterval(anim);
+    }, 30);
+  }, 150);
+
+  // Verdict title
+  var verdictTitle = document.createElement('div');
+  verdictTitle.className = 'verdict-title ' + level;
+  verdictTitle.textContent = level === 'green' ? t.iherbSafe : level === 'yellow' ? t.iherbCaution : t.iherbConcern;
+  verdictCard.appendChild(verdictTitle);
+
+  // Product name
+  if (data.product && data.product.name) {
+    var productName = document.createElement('div');
+    productName.className = 'verdict-summary';
+    productName.style.fontWeight = '600';
+    productName.textContent = data.product.name;
+    if (data.product.brand) {
+      productName.textContent = data.product.brand + ' — ' + data.product.name;
+    }
+    verdictCard.appendChild(productName);
+  }
+
+  // Stats row
+  var stats = document.createElement('div');
+  stats.className = 'verdict-stats';
+  var flagCount = data.meta ? data.meta.flagCount : 0;
+  var ingCount = data.ingredients ? data.ingredients.length : 0;
+  var safeCnt = 0, cautCnt = 0, flagCnt = 0;
+  if (data.ingredients) {
+    for (var ii = 0; ii < data.ingredients.length; ii++) {
+      var fLen = data.ingredients[ii].flags ? data.ingredients[ii].flags.length : 0;
+      var hasSevere = false;
+      for (var fi = 0; fi < fLen; fi++) {
+        if (data.ingredients[ii].flags[fi].severity === 'high') hasSevere = true;
+      }
+      if (hasSevere) flagCnt++;
+      else if (fLen > 0) cautCnt++;
+      else safeCnt++;
+    }
+  }
+  var statItems = [
+    { num: ingCount, label: t.totalIngredients, color: '' },
+    { num: safeCnt, label: t.clearCount, color: 'green' },
+    { num: cautCnt, label: t.cautionCount, color: 'yellow' },
+    { num: flagCnt, label: t.concernCount, color: 'red' },
+  ];
+  for (var si = 0; si < statItems.length; si++) {
+    var stat = document.createElement('div');
+    stat.className = 'verdict-stat';
+    var num = document.createElement('div');
+    num.className = 'num' + (statItems[si].color ? ' ' + statItems[si].color : '');
+    num.textContent = String(statItems[si].num);
+    var lbl = document.createElement('div');
+    lbl.className = 'label';
+    lbl.textContent = statItems[si].label;
+    stat.appendChild(num);
+    stat.appendChild(lbl);
+    stats.appendChild(stat);
+  }
+  verdictCard.appendChild(stats);
+
+  // Action buttons
+  var actionRow = document.createElement('div');
+  actionRow.className = 'action-row';
+  var checkAnotherBtn = document.createElement('button');
+  checkAnotherBtn.className = 'action-btn filled';
+  checkAnotherBtn.style.background = 'linear-gradient(135deg,#4CAF50,#388E3C)';
+  checkAnotherBtn.appendChild(createSVG(['M23 4v6h-6', 'M1 20v-6h6', 'M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'], 18, 2));
+  var checkAgainText = document.createElement('span');
+  checkAgainText.textContent = t.iherbSubmit;
+  checkAnotherBtn.appendChild(checkAgainText);
+  checkAnotherBtn.onclick = function() { showScreen('iherb-screen'); };
+  actionRow.appendChild(checkAnotherBtn);
+  verdictCard.appendChild(actionRow);
+  container.appendChild(verdictCard);
+
+  // ── Serving Size ──
+  if (data.product && data.product.servingSize) {
+    var servCard = document.createElement('div');
+    servCard.className = 'iherb-info-card animate-in stagger-1';
+    var servTitle = document.createElement('div');
+    servTitle.className = 'iherb-info-title';
+    servTitle.textContent = t.iherbServingSize;
+    servCard.appendChild(servTitle);
+    var servText = document.createElement('div');
+    servText.className = 'iherb-info-text';
+    servText.textContent = data.product.servingSize;
+    servCard.appendChild(servText);
+    container.appendChild(servCard);
+  }
+
+  // ── Ingredient Cards ──
+  if (data.ingredients) {
+    var sectionLabel = document.createElement('div');
+    sectionLabel.className = 'section-label animate-in stagger-2';
+    sectionLabel.style.color = 'var(--text)';
+    sectionLabel.textContent = t.totalIngredients + ' (' + data.ingredients.length + ')';
+    container.appendChild(sectionLabel);
+
+    for (var i = 0; i < data.ingredients.length; i++) {
+      var ing = data.ingredients[i];
+      var hasSevereFlag = false;
+      var hasMedFlag = false;
+      if (ing.flags) {
+        for (var fi2 = 0; fi2 < ing.flags.length; fi2++) {
+          if (ing.flags[fi2].severity === 'high') hasSevereFlag = true;
+          if (ing.flags[fi2].severity === 'medium') hasMedFlag = true;
+        }
+      }
+      var cardLevel = hasSevereFlag ? 'concern' : hasMedFlag ? 'caution' : 'safe';
+
+      var card = document.createElement('div');
+      card.className = 'iherb-ing-card ' + cardLevel + ' animate-in';
+      card.style.animationDelay = (0.05 * i) + 's';
+      card.style.opacity = '0';
+
+      var top = document.createElement('div');
+      top.className = 'iherb-ing-top';
+      var nameEl = document.createElement('div');
+      nameEl.className = 'iherb-ing-name';
+      nameEl.textContent = ing.hebrewName || ing.name;
+      top.appendChild(nameEl);
+      var amountEl = document.createElement('div');
+      amountEl.className = 'iherb-ing-amount';
+      amountEl.textContent = ing.amount || '';
+      top.appendChild(amountEl);
+      card.appendChild(top);
+
+      // Hebrew sub-name if different
+      if (ing.hebrewName && ing.name !== ing.hebrewName) {
+        var heEl = document.createElement('div');
+        heEl.className = 'iherb-ing-he';
+        heEl.textContent = ing.name;
+        heEl.style.direction = 'ltr';
+        heEl.style.textAlign = currentLang === 'he' ? 'right' : 'left';
+        card.appendChild(heEl);
+      }
+
+      // Daily value
+      if (ing.dailyValue) {
+        var dvEl = document.createElement('div');
+        dvEl.className = 'iherb-ing-dv';
+        dvEl.textContent = t.iherbDailyValue + ': ' + ing.dailyValue + '%';
+        card.appendChild(dvEl);
+      }
+
+      // Flags
+      if (ing.flags && ing.flags.length > 0) {
+        var flagsWrap = document.createElement('div');
+        flagsWrap.style.marginTop = '6px';
+        for (var fi3 = 0; fi3 < ing.flags.length; fi3++) {
+          var flag = ing.flags[fi3];
+          var flagEl = document.createElement('span');
+          flagEl.className = 'iherb-flag ' + flag.severity;
+          flagEl.textContent = (currentLang === 'he' ? (flag.text || flag.textEn) : (flag.textEn || flag.text)) || '';
+          flagsWrap.appendChild(flagEl);
+        }
+        card.appendChild(flagsWrap);
+      }
+
+      container.appendChild(card);
+    }
+  }
+
+  // ── Other Ingredients ──
+  if (data.otherIngredients) {
+    var otherCard = document.createElement('div');
+    otherCard.className = 'iherb-info-card animate-in';
+    var otherTitle = document.createElement('div');
+    otherTitle.className = 'iherb-info-title';
+    otherTitle.textContent = t.iherbOtherIngredients;
+    otherCard.appendChild(otherTitle);
+    var otherText = document.createElement('div');
+    otherText.className = 'iherb-info-text';
+    otherText.textContent = data.otherIngredients;
+    otherCard.appendChild(otherText);
+    container.appendChild(otherCard);
+  }
+
+  // ── Warnings ──
+  if (data.product && data.product.warnings) {
+    var warnCard = document.createElement('div');
+    warnCard.className = 'iherb-info-card animate-in';
+    warnCard.style.borderColor = 'var(--caution-border)';
+    warnCard.style.background = 'var(--caution-bg)';
+    var warnTitle = document.createElement('div');
+    warnTitle.className = 'iherb-info-title';
+    warnTitle.style.color = 'var(--caution)';
+    warnTitle.textContent = t.iherbWarnings;
+    warnCard.appendChild(warnTitle);
+    var warnText = document.createElement('div');
+    warnText.className = 'iherb-info-text';
+    warnText.textContent = data.product.warnings;
+    warnCard.appendChild(warnText);
+    container.appendChild(warnCard);
+  }
+
+  // ── Suggested Use ──
+  if (data.product && data.product.suggestedUse) {
+    var useCard = document.createElement('div');
+    useCard.className = 'iherb-info-card animate-in';
+    var useTitle = document.createElement('div');
+    useTitle.className = 'iherb-info-title';
+    useTitle.textContent = t.iherbSuggestedUse;
+    useCard.appendChild(useTitle);
+    var useText = document.createElement('div');
+    useText.className = 'iherb-info-text';
+    useText.textContent = data.product.suggestedUse;
+    useCard.appendChild(useText);
+    container.appendChild(useCard);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FOOD DYE CHECKER
+// ═══════════════════════════════════════════════════════════════
+var dyeMode = 'search';
+var lastDyeResults = null;
+
+function switchDyeTab(mode) {
+  dyeMode = mode;
+  document.getElementById('dye-tab-search').className = 'dye-tab' + (mode === 'search' ? ' active' : '');
+  document.getElementById('dye-tab-scan').className = 'dye-tab' + (mode === 'scan' ? ' active' : '');
+  document.getElementById('dye-search-panel').style.display = mode === 'search' ? 'block' : 'none';
+  document.getElementById('dye-scan-panel').style.display = mode === 'scan' ? 'block' : 'none';
+}
+
+// Input validation
+(function() {
+  var searchInput = document.getElementById('dye-search-input');
+  var searchBtn = document.getElementById('dye-search-btn');
+  var scanInput = document.getElementById('dye-scan-input');
+  var scanBtn = document.getElementById('dye-scan-btn');
+  if (searchInput && searchBtn) {
+    searchInput.addEventListener('input', function() {
+      searchBtn.disabled = !searchInput.value.trim();
+    });
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !searchBtn.disabled) checkDye('search');
+    });
+  }
+  if (scanInput && scanBtn) {
+    scanInput.addEventListener('input', function() {
+      scanBtn.disabled = !scanInput.value.trim();
+    });
+  }
+})();
+
+function loadDyeExample() {
+  if (dyeMode === 'search') {
+    var input = document.getElementById('dye-search-input');
+    input.value = 'Red 3';
+    input.dispatchEvent(new Event('input'));
+  } else {
+    var textarea = document.getElementById('dye-scan-input');
+    textarea.value = 'Sugar, Enriched Flour (Wheat Flour, Niacin, Reduced Iron, Thiamine Mononitrate, Riboflavin, Folic Acid), Water, Palm and/or Canola Oil, Corn Syrup, High Fructose Corn Syrup, Red 40, Yellow 5, Blue 1, Modified Corn Starch, Salt, Sodium Stearoyl Lactylate, Soy Lecithin, Artificial Flavor';
+    textarea.dispatchEvent(new Event('input'));
+  }
+}
+
+function checkDye(mode) {
+  var errorEl = document.getElementById('dye-error');
+  errorEl.style.display = 'none';
+  var body = {};
+  if (mode === 'search') {
+    var q = document.getElementById('dye-search-input').value.trim();
+    if (!q) return;
+    body.query = q;
+  } else {
+    var ing = document.getElementById('dye-scan-input').value.trim();
+    if (!ing) return;
+    body.ingredients = ing;
+  }
+
+  showScreen('dye-loading-screen');
+
+  fetch('/api/food-dye-check', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.error) {
+      showScreen('dye-screen');
+      errorEl.textContent = data.error;
+      errorEl.style.display = 'block';
+      return;
+    }
+    lastDyeResults = data;
+    renderDyeResults(data);
+    showScreen('dye-results-screen');
+  })
+  .catch(function(err) {
+    showScreen('dye-screen');
+    errorEl.textContent = currentLang === 'he' ? 'שגיאה בבדיקה. נסו שוב.' : 'Error checking. Please try again.';
+    errorEl.style.display = 'block';
+  });
+}
+
+function renderDyeResults(data) {
+  var t = LANG[currentLang];
+  var container = document.getElementById('dye-results-container');
+  while (container.firstChild) container.removeChild(container.firstChild);
+
+  var score = data.score;
+  var level = score >= 75 ? 'green' : score >= 45 ? 'yellow' : 'red';
+
+  // If scan mode with 0 results = clean product
+  if (data.mode === 'scan' && data.results.length === 0) {
+    var cleanCard = document.createElement('div');
+    cleanCard.className = 'dye-clean-card animate-up';
+    var cleanIcon = document.createElement('div');
+    cleanIcon.style.cssText = 'font-size:48px;margin-bottom:12px;';
+    cleanIcon.textContent = '\u2705';
+    cleanCard.appendChild(cleanIcon);
+    var cleanH = document.createElement('h3');
+    cleanH.textContent = t.dyeClean;
+    cleanCard.appendChild(cleanH);
+    var cleanP = document.createElement('p');
+    cleanP.textContent = t.dyeCleanSub;
+    cleanCard.appendChild(cleanP);
+    container.appendChild(cleanCard);
+
+    // Check another button
+    var actionRow = document.createElement('div');
+    actionRow.className = 'action-row';
+    actionRow.style.textAlign = 'center';
+    actionRow.style.marginTop = '20px';
+    var againBtn = document.createElement('button');
+    againBtn.className = 'action-btn filled';
+    againBtn.style.background = 'linear-gradient(135deg,#FF6B35,#E53935)';
+    againBtn.textContent = t.dyeSubmitScan;
+    againBtn.onclick = function() { showScreen('dye-screen'); };
+    actionRow.appendChild(againBtn);
+    container.appendChild(actionRow);
+    return;
+  }
+
+  // ── Verdict Card ──
+  var circumference = 2 * Math.PI * 54;
+  var offset = circumference * (1 - score / 100);
+
+  var verdictCard = document.createElement('div');
+  verdictCard.className = 'verdict-card level-' + level + ' animate-up';
+
+  // Score ring
+  var scoreWrap = document.createElement('div');
+  scoreWrap.className = 'score-ring-wrap';
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', '0 0 120 120');
+  var bgCircle = document.createElementNS(svgNS, 'circle');
+  bgCircle.setAttribute('class', 'score-ring-bg');
+  bgCircle.setAttribute('cx', '60'); bgCircle.setAttribute('cy', '60'); bgCircle.setAttribute('r', '54');
+  svg.appendChild(bgCircle);
+  var fillCircle = document.createElementNS(svgNS, 'circle');
+  fillCircle.setAttribute('class', 'score-ring-fill ' + level);
+  fillCircle.setAttribute('cx', '60'); fillCircle.setAttribute('cy', '60'); fillCircle.setAttribute('r', '54');
+  fillCircle.setAttribute('stroke-dasharray', String(circumference));
+  fillCircle.setAttribute('stroke-dashoffset', String(circumference));
+  svg.appendChild(fillCircle);
+  scoreWrap.appendChild(svg);
+  var scoreNum = document.createElement('div');
+  scoreNum.className = 'score-number';
+  scoreNum.textContent = '0';
+  scoreWrap.appendChild(scoreNum);
+  var scoreLbl = document.createElement('div');
+  scoreLbl.className = 'score-label';
+  scoreLbl.textContent = t.scoreLabel;
+  scoreWrap.appendChild(scoreLbl);
+  verdictCard.appendChild(scoreWrap);
+
+  setTimeout(function() {
+    fillCircle.setAttribute('stroke-dashoffset', String(offset));
+    var counter = { val: 0 };
+    var step = Math.max(1, Math.floor(score / 30));
+    var anim = setInterval(function() {
+      counter.val = Math.min(counter.val + step, score);
+      scoreNum.textContent = String(counter.val);
+      if (counter.val >= score) clearInterval(anim);
+    }, 30);
+  }, 150);
+
+  // Verdict title
+  var verdictTitle = document.createElement('div');
+  verdictTitle.className = 'verdict-title ' + level;
+  verdictTitle.textContent = level === 'green' ? t.dyeSafe : level === 'yellow' ? t.dyeCaution : t.dyeConcern;
+  verdictCard.appendChild(verdictTitle);
+
+  // Query or mode label
+  if (data.query) {
+    var queryLabel = document.createElement('div');
+    queryLabel.className = 'verdict-summary';
+    queryLabel.style.fontWeight = '600';
+    queryLabel.textContent = data.query;
+    verdictCard.appendChild(queryLabel);
+  }
+
+  // Stats row
+  var stats = document.createElement('div');
+  stats.className = 'verdict-stats';
+  var statItems = [
+    { num: data.summary.total, label: t.totalIngredients, color: '' },
+    { num: data.summary.safe, label: t.clearCount, color: 'green' },
+    { num: data.summary.caution, label: t.cautionCount, color: 'yellow' },
+    { num: data.summary.concern, label: t.concernCount, color: 'red' },
+  ];
+  for (var si = 0; si < statItems.length; si++) {
+    var stat = document.createElement('div');
+    stat.className = 'verdict-stat';
+    var num = document.createElement('div');
+    num.className = 'num' + (statItems[si].color ? ' ' + statItems[si].color : '');
+    num.textContent = String(statItems[si].num);
+    var lbl = document.createElement('div');
+    lbl.className = 'label';
+    lbl.textContent = statItems[si].label;
+    stat.appendChild(num);
+    stat.appendChild(lbl);
+    stats.appendChild(stat);
+  }
+  verdictCard.appendChild(stats);
+
+  // Action buttons
+  var actionRow2 = document.createElement('div');
+  actionRow2.className = 'action-row';
+  var checkBtn = document.createElement('button');
+  checkBtn.className = 'action-btn filled';
+  checkBtn.style.background = 'linear-gradient(135deg,#FF6B35,#E53935)';
+  checkBtn.appendChild(createSVG(['M23 4v6h-6', 'M1 20v-6h6', 'M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'], 18, 2));
+  var checkText = document.createElement('span');
+  checkText.textContent = data.mode === 'scan' ? t.dyeSubmitScan : t.dyeSubmitSearch;
+  checkBtn.appendChild(checkText);
+  checkBtn.onclick = function() { showScreen('dye-screen'); };
+  actionRow2.appendChild(checkBtn);
+  verdictCard.appendChild(actionRow2);
+  container.appendChild(verdictCard);
+
+  // ── Dye Result Cards ──
+  if (data.results && data.results.length > 0) {
+    var sectionLabel = document.createElement('div');
+    sectionLabel.className = 'section-label animate-in stagger-2';
+    sectionLabel.style.color = 'var(--text)';
+    sectionLabel.textContent = (data.mode === 'scan' ? t.dyeTitle : t.dyeTitle) + ' (' + data.results.length + ')';
+    container.appendChild(sectionLabel);
+
+    for (var i = 0; i < data.results.length; i++) {
+      var dye = data.results[i];
+      var card = document.createElement('div');
+      card.className = 'dye-result-card ' + dye.verdict + ' animate-in';
+      card.style.animationDelay = (0.05 * i) + 's';
+      card.style.opacity = '0';
+
+      // Top row: name + color dot + E-number
+      var topRow = document.createElement('div');
+      topRow.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap;';
+
+      var nameEl = document.createElement('span');
+      nameEl.className = 'dye-name';
+      nameEl.textContent = dye.hebrewName || dye.name;
+      topRow.appendChild(nameEl);
+
+      if (dye.color) {
+        var dot = document.createElement('span');
+        dot.className = 'dye-color-dot';
+        dot.style.background = dye.color;
+        topRow.appendChild(dot);
+      }
+
+      if (dye.eNumber) {
+        var eNum = document.createElement('span');
+        eNum.className = 'dye-e-number';
+        eNum.textContent = dye.eNumber;
+        topRow.appendChild(eNum);
+      }
+      card.appendChild(topRow);
+
+      // English name if hebrew shown
+      if (dye.hebrewName && dye.name !== dye.hebrewName) {
+        var enName = document.createElement('div');
+        enName.style.cssText = 'font-size:13px;color:var(--text-secondary);direction:ltr;text-align:' + (currentLang === 'he' ? 'right' : 'left');
+        enName.textContent = (dye.fdcName && !dye.name.includes(dye.fdcName)) ? dye.name + ' (' + dye.fdcName + ')' : dye.name;
+        card.appendChild(enName);
+      } else if (dye.fdcName && dye.fdcName !== dye.name) {
+        var fdcEl = document.createElement('div');
+        fdcEl.style.cssText = 'font-size:13px;color:var(--text-secondary);';
+        fdcEl.textContent = dye.fdcName;
+        card.appendChild(fdcEl);
+      }
+
+      // Type badge + status chips
+      var statusRow = document.createElement('div');
+      statusRow.className = 'dye-status-row';
+
+      if (dye.type === 'synthetic' || dye.type === 'natural') {
+        var typeBadge = document.createElement('span');
+        typeBadge.className = 'dye-type-badge ' + dye.type;
+        typeBadge.textContent = dye.type === 'natural' ? t.dyeNatural : t.dyeSynthetic;
+        statusRow.appendChild(typeBadge);
+      }
+
+      if (dye.banned) {
+        var bannedChip = document.createElement('span');
+        bannedChip.className = 'dye-status-chip banned';
+        bannedChip.textContent = t.dyeBanned;
+        statusRow.appendChild(bannedChip);
+      }
+      if (dye.phaseOut) {
+        var poChip = document.createElement('span');
+        poChip.className = 'dye-status-chip phase-out';
+        poChip.textContent = t.dyePhaseOut;
+        statusRow.appendChild(poChip);
+      }
+      if (dye.euWarning) {
+        var ewChip = document.createElement('span');
+        ewChip.className = 'dye-status-chip eu-warning';
+        ewChip.textContent = t.dyeEuWarning;
+        statusRow.appendChild(ewChip);
+      }
+      card.appendChild(statusRow);
+
+      // Banned/phase-out note
+      if (dye.bannedNote) {
+        var noteEl = document.createElement('div');
+        noteEl.style.cssText = 'font-size:13px;color:var(--concern);margin-top:6px;font-weight:600;';
+        noteEl.textContent = dye.bannedNote;
+        card.appendChild(noteEl);
+      }
+      if (dye.phaseOutNote) {
+        var poNote = document.createElement('div');
+        poNote.style.cssText = 'font-size:13px;color:#E65100;margin-top:6px;font-weight:600;';
+        poNote.textContent = dye.phaseOutNote;
+        card.appendChild(poNote);
+      }
+
+      // FDA / EU status
+      if (dye.fdaStatus) {
+        var fdaEl = document.createElement('div');
+        fdaEl.style.cssText = 'font-size:12px;color:var(--text-secondary);margin-top:6px;';
+        fdaEl.textContent = t.dyeFdaStatus + ': ' + dye.fdaStatus;
+        card.appendChild(fdaEl);
+      }
+      if (dye.euStatus) {
+        var euEl = document.createElement('div');
+        euEl.style.cssText = 'font-size:12px;color:var(--text-secondary);margin-top:2px;';
+        euEl.textContent = t.dyeEuStatus + ': ' + dye.euStatus;
+        card.appendChild(euEl);
+      }
+
+      // Health concerns
+      if (dye.healthConcerns) {
+        var concerns = document.createElement('div');
+        concerns.className = 'dye-concerns';
+        concerns.textContent = t.dyeHealthConcerns + ': ' + dye.healthConcerns;
+        card.appendChild(concerns);
+      }
+
+      // Matched term (scan mode)
+      if (dye.matchedIn) {
+        var matchEl = document.createElement('div');
+        matchEl.style.cssText = 'font-size:11px;color:var(--text-muted);margin-top:6px;font-style:italic;';
+        matchEl.textContent = t.dyeFoundIn + ' "' + dye.matchedIn + '"';
+        card.appendChild(matchEl);
+      }
+
+      container.appendChild(card);
+    }
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(function() {});
+}
+</script>
+
+<!-- Hidden share card template (rendered off-screen, captured by html2canvas) -->
+<div id="share-card-container">
+  <div class="share-card" id="share-card">
+    <div class="share-card-header">
+      <div class="share-card-logo">HealthyScan</div>
+      <div class="share-card-ring">
+        <div class="share-card-ring-track" id="sc-ring-track"></div>
+        <div class="share-card-ring-center">
+          <div class="share-card-score" id="sc-score">0</div>
+          <div class="share-card-of">/100</div>
+        </div>
+      </div>
+      <div class="share-card-verdict" id="sc-verdict"></div>
+    </div>
+    <div class="share-card-product" id="sc-product" style="display:none"></div>
+    <div class="share-card-body">
+      <div class="share-card-stats" id="sc-stats"></div>
+      <div class="share-card-flags" id="sc-flags"></div>
+    </div>
+    <div class="share-card-footer">
+      <div class="share-card-url">healthy-scan.app</div>
+      <div class="share-card-badge">&#x1F6E1; Free food scanner</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
