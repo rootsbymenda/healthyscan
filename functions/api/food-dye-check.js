@@ -139,7 +139,7 @@ async function lookupDye(db, query) {
     }
 
     const rows = await db.prepare(
-        `SELECT common_name, e_number, category, us_status, eu_status, health_concerns, hebrew_name
+        `SELECT common_name, e_number, category, us_status, eu_status, health_concerns, health_concerns_he, hebrew_name
          FROM food_additives
          WHERE (${placeholders})
            AND (category LIKE '%color%' OR category LIKE '%dye%')
@@ -229,6 +229,7 @@ export async function onRequestPost(context) {
                     fdaStatus: row.us_status || null,
                     euStatus: row.eu_status || null,
                     healthConcerns: row.health_concerns || null,
+                    healthConcernsHe: row.health_concerns_he || null,
                     banned: canon?.banned || false,
                     bannedNote: canon?.bannedNote || null,
                     phaseOut: canon?.phaseOut || false,
@@ -255,7 +256,7 @@ export async function onRequestPost(context) {
 
             for (const { matchedTerm, eNumber } of foundDyes) {
                 const row = await db.prepare(
-                    `SELECT common_name, e_number, category, us_status, eu_status, health_concerns, hebrew_name
+                    `SELECT common_name, e_number, category, us_status, eu_status, health_concerns, health_concerns_he, hebrew_name
                      FROM food_additives
                      WHERE e_number LIKE ? AND (category LIKE '%color%' OR category LIKE '%dye%')
                      LIMIT 1`
@@ -273,6 +274,7 @@ export async function onRequestPost(context) {
                     fdaStatus: row?.us_status || null,
                     euStatus: row?.eu_status || null,
                     healthConcerns: row?.health_concerns || null,
+                    healthConcernsHe: row?.health_concerns_he || null,
                     banned: canon?.banned || false,
                     bannedNote: canon?.bannedNote || null,
                     phaseOut: canon?.phaseOut || false,

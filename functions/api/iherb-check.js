@@ -255,7 +255,7 @@ async function checkMOHDrugRegistry(ingredientName) {
 async function checkD1Safety(db, ingredientName) {
     try {
         const additive = await db.prepare(
-            `SELECT common_name, e_number, safety_score, iarc_group, health_concerns, eu_status, us_status, hebrew_name
+            `SELECT common_name, e_number, safety_score, iarc_group, health_concerns, health_concerns_he, eu_status, us_status, hebrew_name
              FROM food_additives
              WHERE common_name LIKE ? OR e_number LIKE ?
              LIMIT 1`
