@@ -2290,9 +2290,22 @@ function createIngredientCard(ingredient, t) {
   var displayName = currentLang === 'he' ? (ingredient.name_he || ingredient.name)
     : currentLang === 'ru' ? (ingredient.name_ru || ingredient.name)
     : ingredient.name;
+  // Clean up: remove leading/trailing dots and whitespace
+  displayName = (displayName || '').replace(/^[\s.]+|[\s.]+$/g, '').trim();
   nameEl.textContent = displayName;
-  // Show original input name as subtitle if resolved to different display name
-  if (displayName !== ingredient.name && ingredient.name) {
+  // In Hebrew mode: if name is English (no Hebrew chars), set LTR direction and add Hebrew category as context
+  if (currentLang === 'he' && !ingredient.name_he && displayName) {
+    nameEl.style.direction = 'ltr';
+    nameEl.style.textAlign = 'right';
+    var heCat = ingredient.category_he || CATEGORY_HE_MAP[ingredient.category] || '';
+    if (heCat) {
+      var catHint = document.createElement('div');
+      catHint.style.cssText = 'font-size:11px;opacity:0.6;font-weight:400;margin-top:1px;direction:rtl';
+      catHint.textContent = heCat;
+      nameEl.appendChild(catHint);
+    }
+  } else if (displayName !== ingredient.name && ingredient.name) {
+    // Show original input name as subtitle if resolved to different display name
     // Clean up messy input: strip dangling parens, trim
     var subText = ingredient.name.replace(/^\s*[(\[]+\s*/, '').replace(/\s*[)\]]+\s*$/, '').trim();
     if (subText && subText !== displayName) {
@@ -2329,10 +2342,11 @@ function createIngredientCard(ingredient, t) {
   var funcText;
   if (currentLang === 'he') {
     var heFunc = ingredient.function_he || ingredient.category_he || CATEGORY_HE_MAP[ingredient.category] || '';
-    funcText = heFunc || ingredient.function_en || ingredient.health_concerns || '';
+    // In Hebrew mode: only show Hebrew function text, never fall back to English
+    funcText = heFunc || '';
   } else if (currentLang === 'ru') {
     var ruFunc = CATEGORY_RU_MAP[ingredient.category] || '';
-    funcText = ruFunc || ingredient.function_en || ingredient.health_concerns || '';
+    funcText = ruFunc || ingredient.function_en || '';
   } else {
     funcText = ingredient.function_en || ingredient.health_concerns || '';
   }
@@ -2429,7 +2443,7 @@ function createIngredientCard(ingredient, t) {
   if (ingredient.banned_countries) {
     detailRows.push([t.detailBannedIn, ingredient.banned_countries]);
   }
-  if (ingredient.adi !== undefined && ingredient.adi) {
+  if (ingredient.adi !== undefined && ingredient.adi && currentLang !== 'he') {
     var adiVal = ingredient.adi;
     if (adiVal === 'NOT SPECIFIED' || adiVal === 'Not specified' || adiVal === 'NOT SPECIFIED mg/kg bw') {
       adiVal = t.noADI;
@@ -2620,23 +2634,32 @@ function shareResults() {
 function startCamera() {
   var video = document.getElementById('camera-feed');
   var errorEl = document.getElementById('camera-error');
+  // Always clear processing overlay when camera starts
+  document.getElementById('camera-processing').classList.remove('active');
   navigator.mediaDevices.getUserMedia({
     video: { facingMode: 'environment', width: { ideal: 1920 }, height: { ideal: 1080 } }
   }).then(function(stream) {
     cameraStream = stream;
     video.srcObject = stream;
     errorEl.style.display = 'none';
+    // Restart barcode scanning if in barcode mode
+    if (scanMode === 'barcode') {
+      stopBarcodeScanning();
+      startBarcodeScanning();
+    }
   }).catch(function() {
     errorEl.style.display = 'flex';
   });
 }
 
 function stopCamera() {
+  stopBarcodeScanning();
   if (cameraStream) {
     cameraStream.getTracks().forEach(function(t) { t.stop(); });
     cameraStream = null;
   }
   document.getElementById('camera-feed').srcObject = null;
+  document.getElementById('camera-processing').classList.remove('active');
 }
 
 function showOcrError(msg) {
@@ -2726,6 +2749,13 @@ function setScanMode(mode) {
   var barcodeStatus = document.getElementById('barcode-status');
   if (scanLine) scanLine.classList.toggle('active', mode === 'barcode');
   if (barcodeStatus) barcodeStatus.style.display = mode === 'barcode' ? '' : 'none';
+  // Start/stop barcode scanning based on mode
+  if (mode === 'barcode' && cameraStream) {
+    stopBarcodeScanning();
+    startBarcodeScanning();
+  } else {
+    stopBarcodeScanning();
+  }
 }
 
 // ===== HISTORY =====

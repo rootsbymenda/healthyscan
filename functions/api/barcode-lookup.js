@@ -184,7 +184,43 @@ export async function onRequestPost(context) {
             candidates.push(normalized.substring(1));
         }
 
-        // ── Step 1: Try D1 first (instant, ~2ms) ──
+        // ── Step 0: Try israeli_products first (best Hebrew data) ──
+        let israeliProduct = null;
+        try {
+            for (const code of candidates) {
+                israeliProduct = await env.DB.prepare(
+                    'SELECT barcode, product_name_he, brand, category, ingredients_he, allergens, kashrut, source FROM israeli_products WHERE barcode = ?'
+                ).bind(code).first();
+                if (israeliProduct && israeliProduct.ingredients_he?.length > 3) break;
+                israeliProduct = null;
+            }
+        } catch (e) { /* table may not exist yet */ }
+
+        // If israeli_products has ingredients, return immediately with Hebrew data
+        if (israeliProduct && israeliProduct.ingredients_he?.length > 3) {
+            return Response.json({
+                found: true,
+                source: 'israeli_' + (israeliProduct.source || 'local'),
+                barcode: israeliProduct.barcode,
+                product_name: israeliProduct.product_name_he || '',
+                product_name_he: israeliProduct.product_name_he || '',
+                brands: israeliProduct.brand || '',
+                categories: israeliProduct.category || '',
+                ingredients_text: israeliProduct.ingredients_he || '',
+                ingredients_he: israeliProduct.ingredients_he || '',
+                nutrition_grade: '',
+                nutri_score: '',
+                nova_group: 0,
+                allergens: israeliProduct.allergens ? israeliProduct.allergens.split(',').map(s => s.trim()) : [],
+                additives: [],
+                nutrition: null,
+                image_url: '',
+                traces: [],
+                kashrut: israeliProduct.kashrut || '',
+            }, { headers });
+        }
+
+        // ── Step 1: Try off_products D1 (instant, ~2ms) ──
         let d1Product = null;
         for (const code of candidates) {
             d1Product = await env.DB.prepare(
