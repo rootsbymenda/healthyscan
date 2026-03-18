@@ -1194,20 +1194,20 @@ const LANG = {
     scanAgain: 'סרוק שוב',
     newScan: 'סריקה חדשה',
     shareResult: 'שתף תוצאה',
-    verdictSafe: 'בטוח לאכילה',
-    verdictCaution: 'כדאי לשים לב',
-    verdictConcern: 'שימו לב',
+    verdictSafe: 'בטוח לשימוש',
+    verdictCaution: 'כדאי לבדוק',
+    verdictConcern: 'יש לשים לב',
     summarySafe: 'המוצר הזה נראה בסדר. רוב הרכיבים מוכרים ובטוחים.',
     summaryCaution: 'יש כמה רכיבים שכדאי לשים לב אליהם.',
     summaryConcern: 'מוצר זה מכיל רכיבים שדורשים תשומת לב.',
-    sectionFlagged: 'מסומנים',
+    sectionFlagged: 'דורשים תשומת לב',
     sectionWorthKnowing: 'כדאי לדעת',
-    sectionAllClear: 'תקינים',
-    sectionUnknown: 'לא במאגר',
+    sectionAllClear: 'בסדר גמור',
+    sectionUnknown: 'רכיבים נוספים',
     totalIngredients: 'רכיבים',
     clearCount: 'תקין',
-    cautionCount: 'לתשומת לב',
-    concernCount: 'מסומנים',
+    cautionCount: 'לבדוק',
+    concernCount: 'בעייתי',
     detailSafety: 'רמת בטיחות',
     detailADI: 'ADI (צריכה יומית)',
     detailRegulation: 'מעמד רגולטורי',
@@ -1790,7 +1790,7 @@ function lookupIngredient(rawName) {
     if (eNum) result.e_number = eNum;
     return result;
   }
-  return { name: rawName, level: 'gray', score: null, function_he: 'רכיב לא נמצא במאגר הנתונים', function_en: 'Ingredient not found in database', adi: null, regulation: null, e_number: eNum };
+  return { name: rawName, level: 'gray', score: null, function_he: '', function_en: '', adi: null, regulation: null, e_number: eNum };
 }
 
 function mockAnalyze(ingredientList) { return ingredientList.map(lookupIngredient); }
@@ -2329,7 +2329,12 @@ function createIngredientCard(ingredient, t) {
   if (ingredient.level !== 'gray' && ingredient.score !== null) {
     var levelBadge = document.createElement('span');
     levelBadge.className = 'badge ' + ingredient.level;
-    levelBadge.textContent = ingredient.score + '/100';
+    if (currentLang === 'he') {
+      // Hebrew: simple word instead of score number
+      levelBadge.textContent = ingredient.level === 'green' ? 'בטוח' : ingredient.level === 'yellow' ? 'סביר' : 'בעייתי';
+    } else {
+      levelBadge.textContent = ingredient.score + '/100';
+    }
     badges.appendChild(levelBadge);
   }
 
