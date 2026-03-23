@@ -14,6 +14,7 @@ const ALLOWED_ORIGINS = [
     'https://healthy-scan.app',
     'https://www.healthy-scan.app',
     'https://healthyscan.pages.dev',
+    'https://getpiro.com',
     'http://localhost:8765',
     'http://localhost:8788',
     'http://127.0.0.1:8788',

@@ -51,8 +51,8 @@ async function checkRateLimit(request, db) {
 
     try {
         const minuteResult = await db.prepare(
-            'SELECT COUNT(*) as cnt FROM rate_limits WHERE ip = ? AND ts > ?'
-        ).bind(ip, minuteAgo).first();
+            'SELECT COUNT(*) as cnt FROM rate_limits WHERE ip = ? AND ts > ? AND endpoint = ?'
+        ).bind(ip, minuteAgo, 'food-ocr').first();
         if ((minuteResult?.cnt || 0) >= RATE_LIMIT.MAX_PER_MINUTE) {
             return { allowed: false, reason: 'Too many requests. Please wait a moment.' };
         }
